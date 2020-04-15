@@ -1,4 +1,4 @@
-`CONTRIBUTOR - HARSH RATHOR  `
+`CONTRIBUTOR - HARSH RATHORE  `
 
 
 # IOT_final_project_spring_2020
