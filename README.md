@@ -31,13 +31,6 @@ log.c - contains initialization and functions for logging
 
 letimer.c - Contains code for letimer functions initialization including clock. Also contains the letimer irq handler
 
-adc.c - Contains 12-bit single mode ADC configuation and function to read ADC data from the CHx9 APORT of the ADC connected to the flame sensor analog output pin
-
-adc.h - Contains necessary header files and macro definitions for implementation of ADC functions.
-
-app.c - Contains Bluetooth mesh implementation of the LPN node for communicating alert and data with friend node using Generic ON/OFF and Generic Level model
-
-In addition to the above files the repository contains all the supporting files for bluetooth mesh implementation and SDK support.
 
 ## [Google drive link](https://drive.google.com/drive/u/1/folders/1FM8G4nL0fplihENYMFtwnbRBXwX1w5KG)
 
