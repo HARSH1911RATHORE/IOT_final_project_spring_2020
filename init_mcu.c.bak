@@ -125,8 +125,10 @@ static void initMcu_clocks(void)
   CMU_ClockEnable(cmuClock_HFLE, true);
 
 
-  // To use PLFRCO, uncomment the following block and remove the LFXO lines if they are present.
-  // When using PLFRCO, be sure to have .bluetooth.sleep_clock_accuracy set to 500 (ppm)
+  //To use PLFRCO please remove commenting of these lines
+  //and comment out or delete the LFXO lines if they are present
+  //If using PLFRCO update gecko_configuration_t config's
+  //.bluetooth.sleep_clock_accuracy to 500 (ppm)
 //  #if defined(PLFRCO_PRESENT)
 //    /* Ensure LE modules are accessible */
 //    CMU_ClockEnable(cmuClock_CORELE, true);

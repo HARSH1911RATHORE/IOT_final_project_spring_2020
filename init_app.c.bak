@@ -1,6 +1,6 @@
 /***************************************************************************//**
  * @file
- * @brief hal-config.h
+ * @brief init_app.c
  *******************************************************************************
  * # License
  * <b>Copyright 2018 Silicon Laboratories Inc. www.silabs.com</b>
@@ -15,22 +15,36 @@
  *
  ******************************************************************************/
 
-#ifndef HAL_CONFIG_H
-#define HAL_CONFIG_H
-
-#include "board_features.h"
+#if defined(HAL_CONFIG)
+#include "bsphalconfig.h"
+#include "hal-config.h"
 #include "hal-config-board.h"
-#include "hal-config-app-common.h"
-#include "src/hal-config-ecen5823.h"
-
-#ifndef HAL_VCOM_ENABLE
-#define HAL_VCOM_ENABLE                   (1)
-#endif
-#ifndef HAL_I2CSENSOR_ENABLE
-#define HAL_I2CSENSOR_ENABLE              (0)
-#endif
-#ifndef HAL_SPIDISPLAY_ENABLE
-#define HAL_SPIDISPLAY_ENABLE             (0)
+#else
+#include "bspconfig.h"
 #endif
 
+#include "bsp.h"
+#include "i2cspm.h"
+#include "pti.h"
+
+void initApp(void)
+{
+  // Enable PTI
+  configEnablePti();
+
+#if (HAL_I2CSENSOR_ENABLE)
+  // Initialize I2C peripheral
+  I2CSPM_Init_TypeDef i2cInit = I2CSPM_INIT_DEFAULT;
+  I2CSPM_Init(&i2cInit);
+#endif // HAL_I2CSENSOR_ENABLE
+
+#if defined(HAL_I2CSENSOR_ENABLE) || defined(HAL_SPIDISPLAY_ENABLE)
+#if HAL_I2CSENSOR_ENABLE || HAL_SPIDISPLAY_ENABLE
+#define DISPLAY_SENSOR_COMMON_ENABLE 1
+#else
+#define DISPLAY_SENSOR_COMMON_ENABLE 0
 #endif
+  //Enable I2C sensor and display if requested
+  GPIO_PinModeSet(BSP_I2CSENSOR_ENABLE_PORT, BSP_I2CSENSOR_ENABLE_PIN, gpioModePushPull, DISPLAY_SENSOR_COMMON_ENABLE);
+#endif
+}
