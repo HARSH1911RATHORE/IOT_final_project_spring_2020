@@ -32,7 +32,7 @@
 #include "em_i2c.h"
 #include "i2c.h"
 #include "I2C_INTERRUPT_MODE.h"
-#include "state_machine.h"
+
 #include "main.h"
 #include "infrastructure.h"
 #include "gatt_db.h"
@@ -47,5 +47,11 @@
  * @return void
  */
 void gecko_ecen5823_update(struct gecko_cmd_packet* evt);
+
+//~~~
+extern bool event_write_aqi_done;
+extern bool event_write_aqi_progressing;
+extern bool event_configure_aqi;
+//~~~
 
 #endif

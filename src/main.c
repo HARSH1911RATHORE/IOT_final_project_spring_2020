@@ -26,6 +26,12 @@
 #include "Server.h"
 #include "Client.h"
 
+#include "../platform/emdrv/gpiointerrupt/inc/gpiointerrupt.h"
+
+//~~~~~~
+int aqi_state=0;
+//~~~~
+
 float read=0;
 bool lcd =false;
 
@@ -50,8 +56,10 @@ uint32_t event_write_bluetooth=32;			//event 32 is event write event
 
 uint32_t event_i2c_progress_write=64;       //event progress write is write in progress
 uint32_t event_i2c_progress_read=128;		//event progress read is read in progress
-
-
+//~~~~~~~~
+uint32_t event_gpio_Callback=1<<11;
+uint32_t gpio_call=0;
+//~~~~~~~
 /**
 * @return a float value based on a UINT32 value written by FLT_TO_UINT32
 and
@@ -81,7 +89,7 @@ void sleep()
  * @param void
  *
  */
-void temperatureMeasure()
+void humidityMeasure()
 {
 	uint8_t htmTempBuffer[5]; /* Stores the temperature data in the Health Thermometer (HTM) format. */
 	uint8_t flags = 0x00;   /* HTM flags set as 0 for Celsius, no time stamp and no temperature type. */
@@ -104,7 +112,7 @@ void temperatureMeasure()
 	 * This enables the Health Thermometer in the Blue Gecko app to display the temperature.
 	 *  0xFF as connection ID will send indications to all connections. */
 	gecko_cmd_gatt_server_send_characteristic_notification(
-			connection_all, gattdb_temperature_measurement, characteristic_handle, htmTempBuffer);
+			connection_all, gattdb_humidity, characteristic_handle, htmTempBuffer);
 	gecko_cmd_le_connection_get_rssi(val);
 }
 
@@ -121,7 +129,14 @@ void shut_down_i2c_letimer()
 	LETIMER_Reset(LETIMER0);
 
 }
+void gpioCallback1(uint8_t pin)
+{
+	LOG_INFO("gpio CALLBACK");
+	gpio_call|=event_gpio_Callback;
+	gecko_external_signal(gpio_call);
+	event_write_aqi_done=true;
 
+}
 
 int appMain(gecko_configuration_t *config)
 {
@@ -129,18 +144,40 @@ int appMain(gecko_configuration_t *config)
 	gpioInit();                                      //gpio init
 	gpioLed0SetOff();                                //setting led off initially
 	clockInit();                                     //clock initialization for letimer
+	letimerInit();
 	logInit();
 	displayInit();
+
+	init_i2c();
+
 	gpio_interrupt_enable();						//call gpio external interrupt init
+	// Enable clock for GPIO module, initialize GPIOINT
+	CMU_ClockEnable(cmuClock_GPIO, true);
+	GPIOINT_Init();
+//	  /* configure interrupt for PB0 and PB1, rising edges */
+	  GPIO_ExtIntConfig(BSP_BUTTON1_PORT, BSP_BUTTON1_PIN, BSP_BUTTON1_PIN,
+	                    true, true, true);
+	// Register callback functions and enable interrupts
+	GPIOINT_CallbackRegister(6, gpioCallback1);
+	
+	init_aqi_i2c();
+	aqi_sensor_init();
+	
+#ifdef NON_BLOCKING	
 	current_state=power_up;                         //setting current state to power up
-	aqi_current_state=power_on;
+	current_state_aqi=configure;
+	event_configure_aqi=true;
+#endif	
+
 	while(1)
 	{
+#ifdef NON_BLOCKING
 		if (IsClientDevice()==false)				//checking if client mode is on
 		{
-			state_machine_i2c_si7021();					//if not state machine works
-			state_machine_i2c_aqi_ccs811();
+			state_machine_i2c_humidity();
+			state_machine_i2c_aqi();
 		}
+#endif		
 		struct gecko_cmd_packet* evt;
 		evt = gecko_wait_event();					//calling event wait
 		if (IsClientDevice()==true)					//if client is true, call client function else call server

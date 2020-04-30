@@ -95,9 +95,11 @@ void Gpio_enable();
  * @return void
  */
 
-
-void WRITE_DATA_I2C(I2C_TransferSeq_TypeDef structure_init,uint16_t len);
-uint16_t READ_DATA_I2C(I2C_TransferSeq_TypeDef structure_init, uint8_t len);
-
 void Gpio_sensor_enable();
+
+
+//~~~~~
+void init_aqi_i2c();
+void HUMIDITY_POLL();
+//~~~~~~
 #endif

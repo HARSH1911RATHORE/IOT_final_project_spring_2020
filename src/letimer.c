@@ -1,6 +1,6 @@
 #include "letimer.h"
 #include "state_machine.h"
-#include "display.h"
+
 const SLEEP_EnergyMode_t sleep_mode=sleepEM2;   // setting the mode at which the system will operate
 
 extern uint32_t freq;
@@ -85,9 +85,9 @@ void LETIMER0_IRQHandler(void)
 		if((flags & LETIMER_IF_UF) == LETIMER_IF_UF)                  //if underflow interrupt has occurred, then set led on
 		{
 			rollover++;												//for logger timestamp
-			displayUpdate();
+#ifdef BLOCKING_MODE			
 			gecko_external_signal(event_bluetooth);					//check for 3 second uf interrupt and send the signal to bluetooth stack
-
+#endif
 		}
 
 		CORE_ATOMIC_IRQ_ENABLE();

@@ -63,7 +63,7 @@ void gpio_interrupt_enable()
 
 void GPIO_EVEN_IRQHandler(void)
 {
-	LOG_INFO("pb0 has been pressed1\n");
+	LOG_INFO("BUTTON PB0 has been pressed\n");
 	CORE_ATOMIC_IRQ_DISABLE();
 	uint32_t status = GPIO_IntGet();
 	button|=PB0_PRESSED;						//button pressed

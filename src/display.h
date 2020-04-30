@@ -48,6 +48,8 @@ enum display_row {
 	DISPLAY_ROW_ACTION,
 	DISPLAY_ROW_TEMPVALUE,
 	DISPLAY_ROW_MAX,
+	HUMIDITY,
+	AQI
 };
 extern bool lcd;
 

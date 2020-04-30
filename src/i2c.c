@@ -4,7 +4,10 @@
 
 
 I2C_TransferReturn_TypeDef check_read;
-
+//~~
+extern uint8_t humid_STATE;
+extern uint8_t aqi_STATE;
+//~~
 
 /**
  * For disabling gpio pins in case of no event i.e load power management off
@@ -62,24 +65,31 @@ void Gpio_enable()
  */
 
 
-void event_handler()
+uint16_t HUMIDITY_POLLING_EVENT()
 {
+if(aqi_STATE!=1)
+{
+	LOG_INFO("\nHUMID\n");
+	humid_STATE=1;
+
 	if (event==true)                           //if event true then i2c functions
 	{                                          //change the flag to false
 		init_i2c();                            //calling init i2c
 		timerWaitUs(80000);                    //waiting for 80 ms power up time
 		transfer_i2c();                        //write to i2c temperature sensor
 		timerWaitUs(5000);                     //wait for some time for transfer
-//		float read=read_temp_i2c();            //read the temperature
-//		LOG_INFO("read=%f",read);              //log the temperature
+		float read=read_temp_i2c();            //read the temperature
+		LOG_INFO("read=%f",read);              //log the temperature
 		event=0;
+		humid_STATE=0;
+		return (uint16_t)read;
 	}
-	if (event==false)                          //if event flag is false then disable gpio and stop i2c transfer
-	{
-		Gpio_disable();
-	}
+	
 
 }
+
+}
+
 
 /**
  *  Initializing i2c pins, port, frequency, sensor enable pin etc.
@@ -112,52 +122,29 @@ void init_i2c()
 }
 
 
-
-
-void WRITE_DATA_I2C(I2C_TransferSeq_TypeDef structure_init,uint16_t length)
+//~~~~~~~~~~~~~~~
+void init_aqi_i2c()
 {
-	I2C_TransferReturn_TypeDef check;
-
-	structure_init.flags= I2C_FLAG_WRITE;
-	structure_init.buf[0].len=length;
 
 
+		I2CSPM_Init_TypeDef init1=
+		{       I2C0,                                                                  /* Use I2C instance 0 */
+			    gpioPortA,                                                             /* SCL port */
+				5,                                                               	/* SCL pin */
+			    gpioPortB,                                                             /* SDA port */
+				11,                                                               /* SDA pin */
+				5,                                                         		 /* Location of SCL */
+				5,                                                          	/* Location of SDA */
+				Reference_clock,                                                       /* Use currently configured reference clock */
+			    I2C_FREQ_STANDARD_MAX,                                                 /* Set to standard rate  */
+			    i2cClockHLRStandard,                                                   /* Set to use 4:4 low/high duty cycle */
+		};
+		I2CSPM_Init( &init1);                                                          //calling i2c init
 
-	check=I2CSPM_Transfer(I2C0,&structure_init);
-	if(check != i2cTransferDone)
-	{
-		LOG_INFO("Error in writing for i2c");
-		return;
-	}
-}
-
-
-uint16_t READ_DATA_I2C(I2C_TransferSeq_TypeDef structure_init, uint8_t len)
-{
-	I2C_TransferReturn_TypeDef check;
-	uint8_t received_data[2] = {0};			//receiving data
-	uint16_t read_data;
-	structure_init.flags= I2C_FLAG_READ;
-
-	structure_init.buf[0].data= received_data;
-	structure_init.buf[0].len=2;
-	check=I2CSPM_Transfer(I2C0,&structure_init);
-
-	if(check != i2cTransferDone)
-	{
-		LOG_INFO("Error in writing for i2c");
-	}
-	if(len==1)
-	{
-		read_data = received_data[0];
-		return read_data;
-	}
-
-		read_data = received_data[0]<<8;
-		read_data =	(received_data[1])| read_data;
-	return read_data;
 
 }
+//~~~~~~~~~~~~~
+
 
 /**
  * I2C transfer function to write data to slave address
@@ -188,6 +175,7 @@ void transfer_i2c()
 
 
 
+
 /**
  * I2C read function to read the value of temperature from the slave by the master
  *
@@ -214,11 +202,13 @@ float read_temp_i2c()
 	LOG_INFO("READ");                                                         //log read
 	read_temp=read_data[0]<<8;                                                //left shift the read data buffer by 8 bits
 	read_temp=read_data[1]|read_temp;                                         //exor read data with left shifted 8 bits
-	float temp_val = ((175.72*read_temp)/65536)-46.85;                        //calculate temperature
-	LOG_INFO("temperature_val: %f",temp_val);                                 //log temperature value
-	return temp_val;                                                          //return temperature value
+	float rl_humidity = (((read_data[0] * 256 + read_data[1]) * 125.0) / 65536.0) - 6;
+	LOG_INFO("Relative Humidity : %.2f RH \n", rl_humidity);
+                                //log temperature value
+	return rl_humidity;                                                          //return temperature value
 
 }
+
 
 
 

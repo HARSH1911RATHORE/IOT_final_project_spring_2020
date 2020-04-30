@@ -64,5 +64,14 @@ float I2C_Read_temp_value();
  * @return void
  */
 
+
 void I2C0_IRQHandler(void);
+
+
+//~~~
+float I2C_Read_humidity_value();
+uint16_t READ_DATA_I2C(I2C_TransferSeq_TypeDef structure_init, uint8_t len,uint8_t state);
+void WRITE_READ_AQI(I2C_TransferSeq_TypeDef structure_init, uint8_t len_write,uint8_t len_read );
+void WRITE_DATA_I2C(I2C_TransferSeq_TypeDef init,uint16_t len);
+//~~~
 #endif

@@ -69,7 +69,7 @@
 int val;							//value of opened connection, connecion handle
 uint8 button_value;					//button value presently
 
-
+extern int button;
 
 uint8_t bluetooth_stack_heap[DEFAULT_BLUETOOTH_HEAP(MAX_CONNECTIONS)];
 

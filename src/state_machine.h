@@ -32,6 +32,14 @@
 #include "i2c.h"
 #include "I2C_INTERRUPT_MODE.h"
 
+//~~~~~~~~~~~~~~~~~~~~~~~~
+
+#define humidity_read 100
+#define aqi_read   50
+#define Air_quality_index_key (0x4001)
+#define Humidity_key (0x4070)
+//~~~~~~~~~~~~~~~~~~~~~~~~
+
 typedef enum
 {
 	power_up,                                       //states of i2c transaction
@@ -52,25 +60,6 @@ typedef enum
 i2c_temp_states current_state;                //current i2c state
 i2c_events events;
 
-typedef enum
-{
-	power_on,                                       //states of i2c transaction
-	waiting_for_i2c_write_start,
-	waiting_for_i2c_read_start,
-	display_data,
-	sleep_state
-}i2c_aqi_states;
-typedef enum
-{ 													//events
-	setup_timer,
-	i2c_write,
-	timer_event1,
-	i2c_read,
-	power_off
-}i2c_events_aqi;
-
-i2c_aqi_states aqi_current_state;                //current i2c state
-i2c_events_aqi aqi_events;
 extern  uint32_t event_bluetooth;
 extern  uint32_t event_timer_10_bluetooth;								//event processing bits to be passed in the gecko_external_signal function to be processed after bluetooth is initialized
 extern   uint32_t event_timer_80_bluetooth;
@@ -97,10 +86,36 @@ extern bool lcd;
  * @param none
  * @return float value of temperature
  */
+//~~~
+//~~~~~~~~~~~~~~
+typedef enum
+{
+	configure,                                       //states of i2c transaction
+	read_aqi,
+}i2c_aqi_states;
+typedef enum
+{ 													//events
+	setup_timer_event_aqi,
+	start_i2c_write__aqi,
+	setup_timer_event1_aqi,
+	start_i2c_read_aqi,
+	turn_power_off_aqi
+}i2c_aqi_events;
 
-void state_machine_i2c_si7021();
 
-void state_machine_i2c_aqi_ccs811();
+i2c_aqi_states current_state_aqi;                //current i2c state
+i2c_aqi_events events_aqi;
+//~~~~~~~~~~~~~
+extern bool event_configure_aqi;
+extern uint16_t event_aqi_wr_done;
+extern uint16_t event_aqi_wr_progress;
+
+void ppm_poll();
+void humid_get();
+void aqi_sensor_init();
+void state_machine_i2c_humidity();
+void state_machine_i2c_aqi();
+//~~~~~
 
 
 #endif
