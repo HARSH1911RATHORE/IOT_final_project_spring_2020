@@ -100,6 +100,5 @@ void Gpio_sensor_enable();
 
 //~~~~~
 void init_aqi_i2c();
-void HUMIDITY_POLL();
 //~~~~~~
 #endif

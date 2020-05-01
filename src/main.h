@@ -24,7 +24,7 @@
 #define advertsing_interval_max (400)
 #define duration (0)
 #define maxevents (0)
-#define handle_1 (0)
+#define handle (0)
 #define characteristic_handle (5)
 #define connection_all (0xFF)
 

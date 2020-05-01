@@ -33,11 +33,10 @@
 #include "I2C_INTERRUPT_MODE.h"
 
 //~~~~~~~~~~~~~~~~~~~~~~~~
-
-#define humidity_read 100
-#define aqi_read   50
 #define Air_quality_index_key (0x4001)
 #define Humidity_key (0x4070)
+#define humidity_read 100
+#define aqi_read   50
 //~~~~~~~~~~~~~~~~~~~~~~~~
 
 typedef enum
@@ -102,16 +101,15 @@ typedef enum
 	turn_power_off_aqi
 }i2c_aqi_events;
 
-
 i2c_aqi_states current_state_aqi;                //current i2c state
 i2c_aqi_events events_aqi;
 //~~~~~~~~~~~~~
 extern bool event_configure_aqi;
 extern uint16_t event_aqi_wr_done;
 extern uint16_t event_aqi_wr_progress;
-
 void ppm_poll();
-void humid_get();
+//void state_machine_i2c();
+
 void aqi_sensor_init();
 void state_machine_i2c_humidity();
 void state_machine_i2c_aqi();

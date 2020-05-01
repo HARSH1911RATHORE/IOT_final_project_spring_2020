@@ -1,21 +1,16 @@
+//@reference - https://cdn.sparkfun.com/datasheets/BreakoutBoards/CCS811_Programming_Guide.pdf
+//@reference - https://github.com/CU-ECEN-5823/course-project-PuneetBansal
+//@reference - SI LABS API
+
 #include "Server.h"
 #include "Client.h"
-
-#define BLOCKING_MODE   1
-#define NON_BLOCKING 0
-
-//~~~~~~~~~~~~~~~~~~~~~~~~~~
 #include "state_machine.h"
 uint8_t conn_handle=0xFF;
 uint8_t bonded=0;
-//~~~
 extern uint32_t event_gpio_Callback;
 extern uint32_t gpio_call;
 
-#define sensor_timer 6
-//~~~
-//~~~~~~~~~~
-
+int button=0;						//button state
 /* Flag for indicating DFU Reset must be performed */
 uint8_t boot_to_dfu = 0;
 /**
@@ -38,9 +33,8 @@ void initiate_factory_reset(void)
   // reboot after a small delay
   gecko_cmd_hardware_set_soft_timer(2 * 32768, 0, 1);
 }
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`
 
-int button=0;						//button state
+
 
 /**
  * bluetooth stack function to handle the specific commands and events
@@ -57,21 +51,20 @@ void gecko_ecen5823_update(struct gecko_cmd_packet* evt)
        * Here the system is set to start advertising immediately after boot procedure. */
       case gecko_evt_system_boot_id:
 
-    	  //+++++++++++++++++++++++++++++
   		// PUSHBUTTON PRESSED IS PB0 OR PB1 STARTUP, THEN FACTORY RESET
   		if(GPIO_PinInGet(BSP_BUTTON0_PORT, BSP_BUTTON0_PIN)==0)
   		{
   			LOG_INFO("BUTTON PB0 OR PB 1 PRESSED");
   			initiate_factory_reset();
   		}
-    	  //++++++++++++++++++++++++++++
+
         /* Set advertising parameters. 100ms advertisement interval.
          * The first two parameters are minimum and maximum advertising interval, both in
          * units of (milliseconds * 1.6). */
       	gecko_cmd_sm_delete_bondings();												//delete previous bonding
 											//set bonding new connections to true
     	displayPrintf(DISPLAY_ROW_CONNECTION,"ADVERTISING");
-        gecko_cmd_le_gap_set_advertise_timing(handle_1, advertsing_interval_min, advertsing_interval_max, duration, maxevents);	//advertising
+        gecko_cmd_le_gap_set_advertise_timing(handle, advertsing_interval_min, advertsing_interval_max, duration, maxevents);	//advertising
 
         /* Start general advertising and enable connections. */
         gecko_cmd_le_gap_start_advertising(0, le_gap_general_discoverable, le_gap_connectable_scannable);
@@ -85,12 +78,6 @@ void gecko_ecen5823_update(struct gecko_cmd_packet* evt)
     	  Gpio_sensor_enable();
     	  init_i2c();
     	  gecko_cmd_hardware_set_soft_timer(32768, 0, 0);												//set one second soft timer
-
-
-    	  //+++
-    	  gecko_cmd_hardware_set_soft_timer(32768*3, sensor_timer,0 );
-    	  //+++
-
     	  val=evt->data.evt_le_connection_opened.connection;											//current connection handle
     	  gecko_cmd_le_connection_set_parameters(val, connection_int_min, connection_int_max, slave_latency, timeout); //connection parameters
     	  displayPrintf(DISPLAY_ROW_CONNECTION,"CONNECTED");
@@ -125,9 +112,8 @@ void gecko_ecen5823_update(struct gecko_cmd_packet* evt)
 	 		 displayPrintf(DISPLAY_ROW_ACTION,"");
 	 		 displayPrintf(DISPLAY_ROW_CONNECTION,"Bonded");			//print bonded on lcd
 
-	 		 //+++++++++++++
 	 		 bonded=1;
-	 		 //++++++++++++
+
 	 		 break;
 		      /* This event is generated when a connected client has either
 		       * 1) changed a Characteristic Client Configuration, meaning that they have enabled
@@ -148,7 +134,7 @@ void gecko_ecen5823_update(struct gecko_cmd_packet* evt)
 		             * tells the timer to run for 1 second (32.768 kHz oscillator), the 2nd parameter is
 		             * the timer handle and the 3rd parameter '0' tells the timer to repeat continuously until
 		             * stopped manually.*/
-//		            gecko_cmd_hardware_set_soft_timer(32768*2, 0, 0);
+		            gecko_cmd_hardware_set_soft_timer(32768, 0, 0);
 		          } else if (evt->data.evt_gatt_server_characteristic_status.client_config_flags == 0x00) {
 		            /* Indications have been turned OFF - stop the timer. */
 		            gecko_cmd_hardware_set_soft_timer(0, 0, 0);
@@ -159,30 +145,10 @@ void gecko_ecen5823_update(struct gecko_cmd_packet* evt)
 		      /* This event is generated when the software timer has ticked. In this example the temperature
 		       * is read after every 1 second and then the indication of that is sent to the listening client. */
 	  case gecko_evt_hardware_soft_timer_id:
-
-			if(evt->data.evt_hardware_soft_timer.handle==sensor_timer)
-			{
-				
-#ifdef BLOCKING_MODE
-				GPIO_PinOutSet(gpioPortD,15);
-				HUMIDITY_POLL();
-				GPIO_PinOutClear(gpioPortF,7);
-				ppm_poll();
-				GPIO_PinOutSet(gpioPortF,7);
-#else if				
-				event=true;
-				event_configure_aqi=true;
-				LOG_INFO("SENSOR_TIMER");
-				
-#endif				
-			}
-			else
-			{
-				LOG_INFO("hardware_software_timer\n");
-				//send_characteristic_notification to the mobile app with the current button state
-				displayUpdate();
-				displayPrintf(DISPLAY_ROW_BTADDR2,"");
-			}
+		  	  LOG_INFO("hardware_software_timer\n");
+		     //send_characteristic_notification to the mobile app with the current button state
+		  	displayUpdate();
+		  	displayPrintf(DISPLAY_ROW_BTADDR2,"");
 
 
 
@@ -204,22 +170,17 @@ void gecko_ecen5823_update(struct gecko_cmd_packet* evt)
 
 		 		if(bonded==1)
 		 		{
-	 			uint16_t persistent_data_1;
-	 			uint16_t persistent_data_2;
+	 			uint16_t persistent_data;
 	 			struct gecko_msg_flash_ps_load_rsp_t* val;
 	 			val=(gecko_cmd_flash_ps_load(Humidity_key));
-	 			memcpy(&persistent_data_1,&val->value.data,val->value.len);
-	 			LOG_INFO("Persistent data = humidity %d",persistent_data_1);
+	 			memcpy(&persistent_data,&val->value.data,val->value.len);
+	 			LOG_INFO("Persistent data = humidity %d",persistent_data);
 	 			displayPrintf(DISPLAY_ROW_ACTION,"Persistent Data is:");
-	 			displayPrintf(DISPLAY_ROW_TEMPVALUE,"%d Humid",persistent_data_1);
-	 			struct gecko_msg_flash_ps_load_rsp_t* val_1;
-	 			val=(gecko_cmd_flash_ps_load(Air_quality_index_key));
-	 			memcpy(&persistent_data_1,&val_1->value.data,val_1->value.len);
-	 			displayPrintf(DISPLAY_ROW_MAX,"%d AQI",persistent_data_2);
+	 			displayPrintf(DISPLAY_ROW_TEMPVALUE,"%d Humid",persistent_data);
 		 		}																				//make button value back to zero
 
 	 	  }
-	//++++++++++++++++++++++++++++++++++++++++
+
     	  if ((evt->data.evt_system_external_signal.extsignals &event_aqi_wr_done)==event_aqi_wr_done)
     	  {
 
@@ -247,13 +208,13 @@ void gecko_ecen5823_update(struct gecko_cmd_packet* evt)
 				CORE_CRITICAL_IRQ_DISABLE();
 				gpio_call&=~(event_gpio_Callback);
 				event_configure_aqi=true;
-				LOG_INFO("AQI ^^^^^^^^^^^ Event_configure_aqi");
+				LOG_INFO("AQI ^^^^^^^^^^^ event_configure_aqi");
 																//transfer in progress event for read
 				CORE_CRITICAL_IRQ_ENABLE();
 
     	  }
 
-    	  //+++++++++++++++++++++++++++++++++++
+
     	  if ((evt->data.evt_system_external_signal.extsignals & event_bluetooth) == event_bluetooth)    		//checking if 3 second time letimer interrupt occured
     	  {
 				CORE_DECLARE_IRQ_STATE();
@@ -331,7 +292,6 @@ void gecko_ecen5823_update(struct gecko_cmd_packet* evt)
 
       }
 
-      //++++++++++++++++++++++++++++++++++++++++++
       /* Events related to OTA upgrading
          ----------------------------------------------------------------------------- */
 
@@ -352,7 +312,7 @@ void gecko_ecen5823_update(struct gecko_cmd_packet* evt)
   			gecko_cmd_le_connection_close(evt->data.evt_gatt_server_user_write_request.connection);
   		}
   		break;
-      //++++++++++++++++++++++++++++++++++++++++++++++
+
       case gecko_evt_le_connection_rssi_id:
       {
     	  int rssi;

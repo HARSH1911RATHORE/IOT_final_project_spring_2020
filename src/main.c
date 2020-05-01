@@ -28,9 +28,6 @@
 
 #include "../platform/emdrv/gpiointerrupt/inc/gpiointerrupt.h"
 
-//~~~~~~
-int aqi_state=0;
-//~~~~
 
 float read=0;
 bool lcd =false;
@@ -134,7 +131,6 @@ void gpioCallback1(uint8_t pin)
 	LOG_INFO("gpio CALLBACK");
 	gpio_call|=event_gpio_Callback;
 	gecko_external_signal(gpio_call);
-	event_write_aqi_done=true;
 
 }
 
@@ -144,40 +140,31 @@ int appMain(gecko_configuration_t *config)
 	gpioInit();                                      //gpio init
 	gpioLed0SetOff();                                //setting led off initially
 	clockInit();                                     //clock initialization for letimer
-	letimerInit();
 	logInit();
 	displayInit();
-
-	init_i2c();
-
 	gpio_interrupt_enable();						//call gpio external interrupt init
 	// Enable clock for GPIO module, initialize GPIOINT
 	CMU_ClockEnable(cmuClock_GPIO, true);
 	GPIOINT_Init();
-//	  /* configure interrupt for PB0 and PB1, rising edges */
-	  GPIO_ExtIntConfig(BSP_BUTTON1_PORT, BSP_BUTTON1_PIN, BSP_BUTTON1_PIN,
+	  /* configure interrupt for PB0 and PB1, rising edges */
+	GPIO_ExtIntConfig(gpioPortA, 2, 10,
 	                    true, true, true);
 	// Register callback functions and enable interrupts
-	GPIOINT_CallbackRegister(6, gpioCallback1);
-	
+	GPIOINT_CallbackRegister(10, gpioCallback1);
+	current_state=power_up;                         //setting current state to power up
+
+	//~~
 	init_aqi_i2c();
 	aqi_sensor_init();
-	
-#ifdef NON_BLOCKING	
-	current_state=power_up;                         //setting current state to power up
-	current_state_aqi=configure;
-	event_configure_aqi=true;
-#endif	
+	//~~
 
 	while(1)
 	{
-#ifdef NON_BLOCKING
 		if (IsClientDevice()==false)				//checking if client mode is on
 		{
-			state_machine_i2c_humidity();
+			state_machine_i2c_humidity();					//if not state machine works
 			state_machine_i2c_aqi();
 		}
-#endif		
 		struct gecko_cmd_packet* evt;
 		evt = gecko_wait_event();					//calling event wait
 		if (IsClientDevice()==true)					//if client is true, call client function else call server

@@ -85,9 +85,9 @@ void LETIMER0_IRQHandler(void)
 		if((flags & LETIMER_IF_UF) == LETIMER_IF_UF)                  //if underflow interrupt has occurred, then set led on
 		{
 			rollover++;												//for logger timestamp
-#ifdef BLOCKING_MODE			
+
 			gecko_external_signal(event_bluetooth);					//check for 3 second uf interrupt and send the signal to bluetooth stack
-#endif
+
 		}
 
 		CORE_ATOMIC_IRQ_ENABLE();
