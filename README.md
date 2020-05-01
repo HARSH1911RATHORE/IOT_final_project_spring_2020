@@ -46,4 +46,4 @@ The project is a pollution monituring system which monitors the environmental po
 -   Communication was established between the board and the mobile application and was verified
 
 # Documentation
-## HARSH RATHORE ## [](https://github.com/HARSH1911RATHORE/IOT_final_project_spring_2020/tree/1262f5e660c0273681406807c0b4457386b7123b#google-drive-link)[Google drive link](https://drive.google.com/drive/u/1/folders/1FM8G4nL0fplihENYMFtwnbRBXwX1w5KG)
+## HARSH RATHORE [](https://github.com/HARSH1911RATHORE/IOT_final_project_spring_2020/tree/1262f5e660c0273681406807c0b4457386b7123b#google-drive-link)[Google drive link](https://drive.google.com/drive/u/1/folders/1FM8G4nL0fplihENYMFtwnbRBXwX1w5KG)
