@@ -3,16 +3,10 @@
 
 # [](https://github.com/HARSH1911RATHORE/IOT_final_project_spring_2020/tree/1262f5e660c0273681406807c0b4457386b7123b#pollution-monituring-system)Pollution Monituring System
 
-## [](https://github.com/HARSH1911RATHORE/IOT_final_project_spring_2020/tree/1262f5e660c0273681406807c0b4457386b7123b#project-status)Project Status
+# Overview
+The project is a pollution monituring system which monitors the environmental pollution and air quality in the form of ppm value of co2 and humidity in the air. This data is recorded by the server and send to the client mobile application
 
--   The Air quality sensor has been interfaced to the board with Pin number P31 for PD 13, SCL and Pin number P33 for PD 14, SDA. State machine for Humidity based sensor was created with data being measured in no hold master mode .
--   Gpio even based interrupt was configured which gets the status of button press. This button press will be used for bonding the board with the client to prevent man in the middle attack.
--   Persistent data was stored in the flash. The data will be stored for every value of data which exceeds the previous maximum value for that particular sensor. This data will be displayed on the server board every time a external button pb0 is pressed.
--   Communication was established between the board and the mobile application and was verified
-
---Sensor air quality ccs811 yet to work and give proper readings.
-
-The repository contains the following files:
+**The repository contains the following files:**
 
 -   Server.c - Contains code for ble server which will update the data captured from sensors to the client.
 
@@ -32,5 +26,24 @@ The repository contains the following files:
 
 -   letimer.c - Contains code for letimer functions initialization including clock. Also contains the letimer irq handler
 
+# Features 
+* Interfacing CCS811 air quality sensor and on board humidity sensor
+* Sends sensor values to the client mobile application
+* Records the maximum sensor reading in the persistent memory which is displayed on the lcd through a button press after bonding has been established
+* State machines utilising non polling mode and polling mode otherwise
 
-## [](https://github.com/HARSH1911RATHORE/IOT_final_project_spring_2020/tree/1262f5e660c0273681406807c0b4457386b7123b#google-drive-link)[Google drive link](https://drive.google.com/drive/u/1/folders/1FM8G4nL0fplihENYMFtwnbRBXwX1w5KG)
+# Hardware Compoenents
+* SI LABS bluegecko13 board
+* CCS811 Sensor and Si7021 sensor
+* Mobile 
+
+
+## [](https://github.com/HARSH1911RATHORE/IOT_final_project_spring_2020/tree/1262f5e660c0273681406807c0b4457386b7123b#project-status)Project Status
+
+-   The Air quality sensor has been interfaced to the board with Pin number P31 for PD 13, SCL and Pin number P33 for PD 14, SDA. State machine for Humidity based sensor was created with data being measured in no hold master mode .
+-   Gpio even based interrupt was configured which gets the status of button press. This button press will be used for bonding the board with the client to prevent man in the middle attack.
+-   Persistent data was stored in the flash. The data will be stored for every value of data which exceeds the previous maximum value for that particular sensor. This data will be displayed on the server board every time a external button pb0 is pressed.
+-   Communication was established between the board and the mobile application and was verified
+
+# Documentation
+## HARSH RATHORE ## [](https://github.com/HARSH1911RATHORE/IOT_final_project_spring_2020/tree/1262f5e660c0273681406807c0b4457386b7123b#google-drive-link)[Google drive link](https://drive.google.com/drive/u/1/folders/1FM8G4nL0fplihENYMFtwnbRBXwX1w5KG)
