@@ -37,6 +37,8 @@ The project is a pollution monituring system which monitors the environmental po
 * CCS811 Sensor and Si7021 sensor
 * Mobile 
 
+# Block Diagram
+![](https://github.com/HARSH1911RATHORE/IOT_final_project_spring_2020/blob/master/BLOCK_DIAGRAM_IOT.png)
 
 ## [](https://github.com/HARSH1911RATHORE/IOT_final_project_spring_2020/tree/1262f5e660c0273681406807c0b4457386b7123b#project-status)Project Status
 
