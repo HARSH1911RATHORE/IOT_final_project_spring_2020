@@ -35,7 +35,7 @@
 #define SDA_Location 16                        //sda location defined for i2c
 #define Reference_clock 0                      //reference clock selected 0
 
-extern uint8_t write_data;                       //setting no hold master mode
+extern uint8_t no_hold_master;                       //setting no hold master mode
 extern uint32_t one_byte;
 
 extern uint8_t read_data_int[2];
@@ -71,7 +71,7 @@ float read_temp_i2c();
  * @return void
  */
 
-void event_handler();
+uint16_t event_handler();
 /**
  * @brief -  used to disable the Gpio sensor enable pin and port for i2c for energy conservation
  *
@@ -97,8 +97,29 @@ void Gpio_enable();
 
 void Gpio_sensor_enable();
 
+/**
+ * @brief -  used to Read spm based i2c data
+ *
+ * @param I2C_TransferSeq_TypeDef structure and length of read data
+ * @return uint16_t read data value
+ */
+uint16_t READ_DATA_I2C(I2C_TransferSeq_TypeDef structure_init, uint8_t len);
 
-//~~~~~
+/**
+ * @brief -  used to write command or values
+ *
+ * @param i2C_TransferSeq_TypeDef structure and length of read data
+ * @return void
+ */
+void WRITE_DATA_I2C(I2C_TransferSeq_TypeDef init,uint16_t len);
+
+/**
+ * @brief -  used to initialize aqi i2c pins, ports and location
+ *
+ * @param void
+ * @return void
+ */
 void init_aqi_i2c();
-//~~~~~~
+
+uint16_t event_handler();
 #endif

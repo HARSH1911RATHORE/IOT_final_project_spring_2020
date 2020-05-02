@@ -151,12 +151,12 @@ int appMain(gecko_configuration_t *config)
 	                    true, true, true);
 	// Register callback functions and enable interrupts
 	GPIOINT_CallbackRegister(10, gpioCallback1);
+#if NON_BLOCKING
 	current_state=power_up;                         //setting current state to power up
-
-	//~~
+#endif
 	init_aqi_i2c();
 	aqi_sensor_init();
-	//~~
+
 
 	while(1)
 	{

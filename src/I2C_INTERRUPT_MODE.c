@@ -6,8 +6,10 @@
 #include "i2c.h"
 #include "state_machine.h"
 
-uint8_t write_data=0xF5;													//setting no hold master mode
+///////////////////////////////////////////Variables for i2c////////////////////////////
+uint8_t no_hold_master=0xF5;													//setting no hold master mode
 I2C_TransferSeq_TypeDef seq;												//transfer seq structure for read and write i2c
+I2C_TransferSeq_TypeDef structure_init;
 uint32_t one_byte=1;                                                        //one byte of write data
 uint8_t read_data_int[2]={0};                                               //2 bytes of read buffer
 
@@ -17,19 +19,15 @@ uint32_t i2c_evt;															//checking the type of i2c interrupt event occur
 
 int bluetooth_i2c=0;
 
-//~~~~~~~~~~~~~~~~~~~~~~~
-uint8_t read_data_humid[2]={0};
-uint8_t received_data_aqi[2]={0};
-uint16_t event_aqi_wr_done=1<<10;
-uint16_t event_aqi_wr_progress=1<<11;
+uint8_t read_data_humid[2]={0};												//read data to store humidity value
+uint8_t received_data_aqi[2]={0};											//read data to store aqi value
+uint16_t event_aqi_wr_done=1<<10;											//event aqi wr done
+uint16_t event_aqi_wr_progress=1<<11;										//event aqi wr in progress
 
-uint8_t Data1=0xFF;
-uint8_t Data2[2]={0x11,0xE5};
+uint8_t Data1=0xFF;															//aqi software reset id
+uint8_t Data2[2]={0x11,0xE5};												//values for software reset
 uint8_t Data3[2]={0x72,0x8A};
-//~~~~~~~~~~~~~~~~~~~~~~~
-
-
-
+////////////////////////////////////////////////////////////////////////////////////////
 
 
 /**
@@ -58,18 +56,11 @@ float I2C_Read_temp_value()
  *
  */
 
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/**
- * I2C transfer function to write data to slave address
- *
- * @param void
- *
- */
 void I2C_transfer_interrupt_init()
 {
 	seq.addr=slave_address<<1;                                              //shifting the slave address by one
 	seq.flags=I2C_FLAG_WRITE;                                               //i2c write mode
-	seq.buf[0].data=&write_data;                                            //selecting no hold master mode
+	seq.buf[0].data=&no_hold_master;                                            //selecting no hold master mode
 	seq.buf[0].len=one_byte;                                                //writing one byte of data
 	NVIC_EnableIRQ(I2C0_IRQn);                                              //enabling i2c interrupt
 	I2C_Enable(I2C0, true);                                                 //i2c0 enable
@@ -80,7 +71,7 @@ void I2C_transfer_interrupt_init()
 	}
 }
 /**
- * I2C read function to read data to slave address
+ * I2C read function to read data for  slave address
  *
  * @param void
  *
@@ -101,33 +92,41 @@ void I2C_read_interrupt()
 	}
 }
 
+/**
+ * I2C read function value conversion to get humidity
+ *
+ * @param void
+ *
+ */
 float I2C_Read_humidity_value()
 {
 	uint16_t read_humidity;
 	LOG_INFO("READ");                                                             //log read
-	read_humidity=read_data_humid[0]<<8;                                                //left shift the read data buffer by 8 bits
-	read_humidity=read_data_humid[1]|read_humidity;                                         //or read data with left shifted 8 bits
+	read_humidity=read_data_humid[0]<<8;                                          //left shift the read data buffer by 8 bits
+	read_humidity=read_data_humid[1]|read_humidity;                              //or read data with left shifted 8 bits
 	float rl_humidity = (((read_data_humid[0] * 256 + read_data_humid[1]) * 125.0) / 65536.0) - 6;
 	LOG_INFO("Relative Humidity : %.2f RH \n", rl_humidity);
 	return rl_humidity;
 }
 
-
-void WRITE_READ_AQI(I2C_TransferSeq_TypeDef structure_init, uint8_t len_write,uint8_t len_read )
+/**
+ * I2C write read
+ *
+ *  @param write length and read length
+ *  @return - void
+ */
+void WRITE_READ_AQI( uint8_t len_write,uint8_t len_read )
 {
-//	I2C_TransferReturn_TypeDef check;
-				//receiving data
-//	uint16_t read_data;
 	structure_init.addr = 0x5A << 1;
 	structure_init.flags= I2C_FLAG_WRITE_READ;
-	uint16_t command=0x02;
-	structure_init.buf[0].data= &command;
+	uint8_t cmd=ALG_RESULT_DATA;
+	structure_init.buf[0].data= &cmd;										//Algorithm result
 	structure_init.buf[0].len=len_write;
-	structure_init.buf[1].data= received_data_aqi;
+	structure_init.buf[1].data= received_data_aqi;							//data stored in received buffer
 	structure_init.buf[1].len=len_read;
 	NVIC_EnableIRQ(I2C0_IRQn);                                              //enabling i2c interrupt
 	I2C_Enable(I2C0, true);                                                 //i2c0 enable
-	I2C_TransferReturn_TypeDef ret = I2C_TransferInit(I2C0,&seq);
+	I2C_TransferReturn_TypeDef ret = I2C_TransferInit(I2C0,&structure_init);
 	if(ret != i2cTransferDone)                                              //if transfer not done print transfer in progress
 	{
 		LOG_ERROR(" Progress: Write and read using flag write read  ");
@@ -140,97 +139,27 @@ void WRITE_READ_AQI(I2C_TransferSeq_TypeDef structure_init, uint8_t len_write,ui
 }
 
 
-
-uint16_t READ_DATA_I2C(I2C_TransferSeq_TypeDef structure_init, uint8_t len)
+/**
+ * I2C write write
+ *
+ *  @param void
+ *  @return - void
+ */
+void WriteWrite_int_i2c()
 {
-
-
-
-
-	I2C_TransferReturn_TypeDef check;
-	uint8_t received_data[2] = {0};			//receiving data
-	uint16_t read_data;
-//	uint64_t read_data_tvoc;
-	structure_init.addr = 0x5A << 1;
-	structure_init.flags= I2C_FLAG_READ;
-
-	structure_init.buf[0].data=&received_data;
-	structure_init.buf[0].len=len;
-	check=I2CSPM_Transfer(I2C0,&structure_init);
-
-	if(check != i2cTransferDone)
-	{
-		LOG_INFO("Error in reading for i2c");
-	}
-	if(len==1)
-	{
-		read_data = received_data[0];
-		return read_data;
-	}
-	else if(len==2)
-	{
-//		read_data = (ucTemp[0] << 8) + ucTemp[1];
-//		read_data_tvoc = (ucTemp[2] << 8) + ucTemp[3];
-//		if (read_data > 2000 || read_data_tvoc > 1200) // invalid values
-//			LOG_INFO("invalid");
-//		return 1;
-
-//		read_data = (received_data[0]>>8) | (received_data[1]<<8);
-		LOG_INFO("read_data=%d",read_data);
-		read_data = received_data[0];
-		LOG_INFO("read_data[0]=%d",read_data);
-		read_data <<= 8;
-		LOG_INFO("read_data[0]<<8=%d",read_data);
-		read_data	|=(received_data[1]);
-		LOG_INFO("read_data[1]=%d",received_data[1]);
-		LOG_INFO("read_data=%d",read_data);
-//		read_data = received_data[0]<<8;
-//		read_data =	(received_data[1])| read_data;
-
-	}
-//	else
-//	{
-//		read_data=
-//	}
-	return read_data;
-
-}
-
-void WRITE_DATA_I2C(I2C_TransferSeq_TypeDef init,uint16_t len)
-{
-
-	{
-		I2C_TransferReturn_TypeDef ret;
-
-		init.buf[0].len=len;
-		init.flags= I2C_FLAG_WRITE;
-
-
-		ret=I2CSPM_Transfer(I2C0,&init);
-		if(ret != i2cTransferDone)
-		{
-			LOG_ERROR("I2C Write error");
-			return;
-		}
-	}
-}
-
-
-void i2c_IntBasedWriteWrite()
-{
-	I2C_TransferSeq_TypeDef initNonPollingI2c;
-	initNonPollingI2c.addr= 0X5A << 1;
-	initNonPollingI2c.flags= I2C_FLAG_WRITE_WRITE;
-	initNonPollingI2c.buf[0].len=2; // setting the length of write buffer
-	initNonPollingI2c.buf[1].len=2;
-	initNonPollingI2c.buf[0].data= &Data2;
-	initNonPollingI2c.buf[1].data= &Data3;
-	LOG_INFO("Buffer 0 data  is %x",initNonPollingI2c.buf[0].data[0]);
-	LOG_INFO("Buffer 1 data  is %x",initNonPollingI2c.buf[1].data[0]);
+	I2C_TransferSeq_TypeDef init;
+	init.addr= 0X5A << 1;												//slave address of aqi
+	init.flags= I2C_FLAG_WRITE_WRITE;
+	init.buf[0].len=2; // setting the length of write buffer
+	init.buf[1].len=2;
+	init.buf[0].data= Data2;											//data being written are bytes required for software reset of sensor
+	init.buf[1].data= Data3;
+	LOG_INFO("Buffer 0 data  is %x",init.buf[0].data[0]);
+	LOG_INFO("Buffer 1 data  is %x",init.buf[1].data[0]);
 
 	I2C_TransferReturn_TypeDef ret;
 
-	ret=I2CSPM_Transfer(I2C0,&initNonPollingI2c);
+	ret=I2CSPM_Transfer(I2C0,&init);									//transfer mode
 	if(ret != i2cTransferDone)
 	{
 		LOG_ERROR("I2C Write error");
@@ -240,9 +169,13 @@ void i2c_IntBasedWriteWrite()
 
 }
 
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-
+/**
+ * I2C irq handler
+ *
+ *  @param void
+ *  @return - void
+ */
 void I2C0_IRQHandler(void)
 {
 	CORE_ATOMIC_IRQ_DISABLE();
@@ -258,15 +191,10 @@ void I2C0_IRQHandler(void)
 		{																		//read event
 			gecko_external_signal(event_read_bluetooth);
 		}
-
-//+++++++++++++++
 		else
 		{
-			gecko_external_signal(event_aqi_wr_done);
+			gecko_external_signal(event_aqi_wr_done);							//aqi write done
 		}
-//++++++++++++++
-
-
 	}
 
 	else if(transfer_status != i2cTransferDone)                                 //if transfer not complete
@@ -280,12 +208,10 @@ void I2C0_IRQHandler(void)
 
 			gecko_external_signal(event_i2c_progress_read);
 		}
-		//++++++++++++++
 		else
 		{
-			gecko_external_signal(event_aqi_wr_progress);
+			gecko_external_signal(event_aqi_wr_progress);						//aqi write progress
 		}
-		//++++++++++++++
 
 	}
 

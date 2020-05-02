@@ -9,6 +9,9 @@
 ///// *@i2c interrupt functions
 ///// *this header file contains all the i2c interrupt functions, variables and flags
 ///// *@reference SI LABS API
+///// @reference - https://cdn.sparkfun.com/datasheets/BreakoutBoards/CCS811_Programming_Guide.pdf
+///// @reference - https://github.com/CU-ECEN-5823/course-project-PuneetBansal
+///// @reference - SI LABS API
 ///// **This header file provides the app main
 ///// *@author Harsh Rathore
 ///// @ date 16TH FEB
@@ -67,12 +70,30 @@ float I2C_Read_temp_value();
 
 void I2C0_IRQHandler(void);
 
+/**
+ * @brief - i2c based write write functions
+ *
+ * @param void
+ * @return void
+ */
+void WriteWrite_int_i2c();
 
-//~~~
-void i2c_IntBasedWriteWrite();
+/**
+ * @brief - i2c read humidity calculation function
+ *
+ * @param void
+ * @return void
+ */
 float I2C_Read_humidity_value();
-uint16_t READ_DATA_I2C(I2C_TransferSeq_TypeDef structure_init, uint8_t len);
-void WRITE_READ_AQI(I2C_TransferSeq_TypeDef structure_init, uint8_t len_write,uint8_t len_read );
-void WRITE_DATA_I2C(I2C_TransferSeq_TypeDef init,uint16_t len);
-//~~~
+
+/**
+ * @brief - function to write and read to i2c based device
+ *
+ * @param length of write and read
+ * @return void
+ */
+
+
+void WRITE_READ_AQI(uint8_t len_write,uint8_t len_read );
+
 #endif

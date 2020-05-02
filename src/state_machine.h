@@ -8,6 +8,9 @@
 ///// *@state_machine i2c
 ///// *this header file contains all the variables, states and events for state machine of i2c
 ///// *@reference si7021 datasheet-https://www.silabs.com/documents/public/data-sheets/Si7021-A20.pdf // https://www.silabs.com/documents/login/reference-manuals/bluetooth-le-and-mesh-software-api-reference-manual.pd
+/////@reference - https://cdn.sparkfun.com/datasheets/BreakoutBoards/CCS811_Programming_Guide.pdf
+/////@reference - https://github.com/CU-ECEN-5823/course-project-PuneetBansal
+/////@reference - SI LABS API
 ///// **This header file provides the state machine functions
 ///// *@author Harsh Rathore
 ///// @ date 16TH FEB
@@ -32,12 +35,12 @@
 #include "i2c.h"
 #include "I2C_INTERRUPT_MODE.h"
 
-//~~~~~~~~~~~~~~~~~~~~~~~~
 #define Air_quality_index_key (0x4001)
 #define Humidity_key (0x4070)
 #define humidity_read 100
 #define aqi_read   50
-//~~~~~~~~~~~~~~~~~~~~~~~~
+#define ALG_RESULT_DATA  0x02
+
 
 typedef enum
 {
@@ -85,8 +88,7 @@ extern bool lcd;
  * @param none
  * @return float value of temperature
  */
-//~~~
-//~~~~~~~~~~~~~~
+
 typedef enum
 {
 	configure,                                       //states of i2c transaction
@@ -103,17 +105,50 @@ typedef enum
 
 i2c_aqi_states current_state_aqi;                //current i2c state
 i2c_aqi_events events_aqi;
-//~~~~~~~~~~~~~
+
 extern bool event_configure_aqi;
 extern uint16_t event_aqi_wr_done;
 extern uint16_t event_aqi_wr_progress;
-void ppm_poll();
-//void state_machine_i2c();
 
+/**
+ * @brief - Polling based aqi capture
+ *
+ * @param none
+ * @return none
+ */
+void ppm_poll();
+
+/**
+ * @brief - polling based humidity calculation
+ *
+ * @param none
+ * @return none
+ */
+void HUMIDITY_POLL();
+
+/**
+ * @brief - configuration and initialization of air qulaity sensor ccs811
+ *
+ * @param none
+ * @return void
+ */
 void aqi_sensor_init();
+
+/**
+ * @brief - state machine for humidity sensor
+ *
+ * @param none
+ */
 void state_machine_i2c_humidity();
+
+/**
+ * @brief - state machine for aqi sensor
+ *
+ * @param none
+ * @return void
+ */
 void state_machine_i2c_aqi();
-//~~~~~
+
 
 
 #endif

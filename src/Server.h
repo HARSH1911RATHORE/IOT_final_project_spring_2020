@@ -41,8 +41,14 @@
 #include "ble_device_type.h"
 
 
-#define BLOCKING_MODE   0
-#define NON_BLOCKING 1
+#define BLOCKING_MODE   0           //blocking/ polling mode
+#define NON_BLOCKING 1				//non blocking/ using state machine
+
+extern bool event_write_aqi_done;
+extern bool event_write_aqi_progressing; //various aqi state machine events
+extern bool event_configure_aqi;
+extern uint32_t event_gpio_Callback;
+extern uint32_t gpio_call;
 /**
  * bluetooth stack function to handle the specific commands and events
  *
@@ -51,11 +57,7 @@
  */
 void gecko_ecen5823_update(struct gecko_cmd_packet* evt);
 
-extern bool event_write_aqi_done;
-extern bool event_write_aqi_progressing;
-extern bool event_configure_aqi;
-extern uint32_t event_gpio_Callback;
-extern uint32_t gpio_call;
+
 
 
 #endif

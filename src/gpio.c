@@ -75,27 +75,68 @@ void GPIO_EVEN_IRQHandler(void)
 	CORE_ATOMIC_IRQ_ENABLE();
 }
 
-
+/**
+ * Gpio led0 on
+ *
+ * @param void
+ * @return- void
+ *
+ */
 void gpioLed0SetOn()                                             //enabling the led 0
 {
 	GPIO_PinOutSet(LED0_port,LED0_pin);
 }
+/**
+ * Gpio led 0 off
+ *
+ * @param void
+ * @return- void
+ *
+ */
 void gpioLed0SetOff()                                            //disabling the led 0
 {
 	GPIO_PinOutClear(LED0_port,LED0_pin);
 }
+/**
+ * Gpio led1 on
+ *
+ * @param void
+ * @return- void
+ *
+ */
 void gpioLed1SetOn()											 //enabling the led 1
 {
 	GPIO_PinOutSet(LED1_port,LED1_pin);
 }
+/**
+ * Gpio led0 set off
+ *
+ * @param void
+ * @return- void
+ *
+ */
 void gpioLed1SetOff()											 //disabling the led 1
 {
 	GPIO_PinOutClear(LED1_port,LED1_pin);
 }
+/**
+ * Gpio led0 toggle
+ *
+ * @param void
+ * @return- void
+ *
+ */
 void gpioLed0Toggle()
 {
 	GPIO_PinOutToggle(LED0_port,LED0_pin);
 }
+/**
+ * Gpio extcomin pin
+ *
+ * @param bool for display on off
+ * @return- void
+ *
+ */
 void gpioSetDisplayExtcomin(bool high)							//display lcd extcomin pin
 {
 	if(high == true)
@@ -107,6 +148,13 @@ void gpioSetDisplayExtcomin(bool high)							//display lcd extcomin pin
 		EXTCOMIN_CLEAR;											//else cleared
 	}
 }
+/**
+ * Gpio enable display
+ *
+ * @param void
+ * @return- void
+ *
+ */
 void gpioEnableDisplay()
 {
 	ENABLE_DISPLAY;

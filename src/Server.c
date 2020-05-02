@@ -9,6 +9,7 @@ uint8_t conn_handle=0xFF;
 uint8_t bonded=0;
 extern uint32_t event_gpio_Callback;
 extern uint32_t gpio_call;
+#define sensor_timer 5
 
 int button=0;						//button state
 /* Flag for indicating DFU Reset must be performed */
@@ -64,7 +65,7 @@ void gecko_ecen5823_update(struct gecko_cmd_packet* evt)
       	gecko_cmd_sm_delete_bondings();												//delete previous bonding
 											//set bonding new connections to true
     	displayPrintf(DISPLAY_ROW_CONNECTION,"ADVERTISING");
-        gecko_cmd_le_gap_set_advertise_timing(handle, advertsing_interval_min, advertsing_interval_max, duration, maxevents);	//advertising
+        gecko_cmd_le_gap_set_advertise_timing(handle_1, advertsing_interval_min, advertsing_interval_max, duration, maxevents);	//advertising
 
         /* Start general advertising and enable connections. */
         gecko_cmd_le_gap_start_advertising(0, le_gap_general_discoverable, le_gap_connectable_scannable);
@@ -78,6 +79,7 @@ void gecko_ecen5823_update(struct gecko_cmd_packet* evt)
     	  Gpio_sensor_enable();
     	  init_i2c();
     	  gecko_cmd_hardware_set_soft_timer(32768, 0, 0);												//set one second soft timer
+    	  gecko_cmd_hardware_set_soft_timer(32768*3, sensor_timer, 0);
     	  val=evt->data.evt_le_connection_opened.connection;											//current connection handle
     	  gecko_cmd_le_connection_set_parameters(val, connection_int_min, connection_int_max, slave_latency, timeout); //connection parameters
     	  displayPrintf(DISPLAY_ROW_CONNECTION,"CONNECTED");
@@ -145,11 +147,29 @@ void gecko_ecen5823_update(struct gecko_cmd_packet* evt)
 		      /* This event is generated when the software timer has ticked. In this example the temperature
 		       * is read after every 1 second and then the indication of that is sent to the listening client. */
 	  case gecko_evt_hardware_soft_timer_id:
-		  	  LOG_INFO("hardware_software_timer\n");
+		  	if(evt->data.evt_hardware_soft_timer.handle==sensor_timer)
+			{
+
+ #if BLOCKING_MODE
+		  				GPIO_PinOutSet(gpioPortD,15);
+		  				HUMIDITY_POLL();
+		  				GPIO_PinOutClear(gpioPortF,7);
+		  				ppm_poll();
+		  				GPIO_PinOutSet(gpioPortF,7);
+#else
+		  				current_state_aqi=read_aqi;
+		  				event_write_aqi_done=true;
+		  				LOG_INFO("SENSOR_TIMER");
+
+#endif
+		  	}
+		  	else
+		  	{
+		  	LOG_INFO("hardware_software_timer\n");
 		     //send_characteristic_notification to the mobile app with the current button state
 		  	displayUpdate();
 		  	displayPrintf(DISPLAY_ROW_BTADDR2,"");
-
+		  	}
 
 
 		 	  break;
@@ -170,13 +190,18 @@ void gecko_ecen5823_update(struct gecko_cmd_packet* evt)
 
 		 		if(bonded==1)
 		 		{
-	 			uint16_t persistent_data;
-	 			struct gecko_msg_flash_ps_load_rsp_t* val;
-	 			val=(gecko_cmd_flash_ps_load(Humidity_key));
-	 			memcpy(&persistent_data,&val->value.data,val->value.len);
-	 			LOG_INFO("Persistent data = humidity %d",persistent_data);
-	 			displayPrintf(DISPLAY_ROW_ACTION,"Persistent Data is:");
-	 			displayPrintf(DISPLAY_ROW_TEMPVALUE,"%d Humid",persistent_data);
+		 			uint16_t persistent_data;																		//checks if the client and server have bonded
+		 			uint16_t persistent_data_2;																							//if bonded, it displays the persistent data stored in memory for the two sensors
+		 			struct gecko_msg_flash_ps_load_rsp_t* val;
+		 			val=(gecko_cmd_flash_ps_load(Humidity_key));
+		 			memcpy(&persistent_data,&val->value.data,val->value.len);
+		 			LOG_INFO("Persistent data = humidity %d",persistent_data);
+		 			displayPrintf(DISPLAY_ROW_PASSKEY,"Persistent Data is:");
+		 			struct gecko_msg_flash_ps_load_rsp_t* val_1;
+		 			val_1=(gecko_cmd_flash_ps_load(Air_quality_index_key));
+		 			memcpy(&persistent_data_2,&val_1->value.data,val_1->value.len);								//memcopy variable into another variable and display omn lcd
+		 			displayPrintf(DISPLAY_ROW_ACTION,"%d AQI",persistent_data_2);
+		 			displayPrintf(DISPLAY_ROW_TEMPVALUE,"%d Humid",persistent_data);
 		 		}																				//make button value back to zero
 
 	 	  }
@@ -186,7 +211,7 @@ void gecko_ecen5823_update(struct gecko_cmd_packet* evt)
 
 				CORE_DECLARE_IRQ_STATE();
 				CORE_CRITICAL_IRQ_DISABLE();
-				LOG_INFO("AQI +++++++++ SERVER DONE");
+				LOG_INFO("AQI SERVER DONE");
 				event_write_aqi_done=true;																//transfer in progress event for read
 				CORE_CRITICAL_IRQ_ENABLE();
 
@@ -196,7 +221,7 @@ void gecko_ecen5823_update(struct gecko_cmd_packet* evt)
 
 				CORE_DECLARE_IRQ_STATE();
 				CORE_CRITICAL_IRQ_DISABLE();
-				LOG_INFO("AQI !!!!!!!!! SERVER PROGRESS");
+				LOG_INFO("AQI SERVER PROGRESS");
 				event_write_aqi_progressing=true;																//transfer in progress event for read
 				CORE_CRITICAL_IRQ_ENABLE();
 
@@ -208,7 +233,7 @@ void gecko_ecen5823_update(struct gecko_cmd_packet* evt)
 				CORE_CRITICAL_IRQ_DISABLE();
 				gpio_call&=~(event_gpio_Callback);
 				event_configure_aqi=true;
-				LOG_INFO("AQI ^^^^^^^^^^^ event_configure_aqi");
+				LOG_INFO("AQI event_configure_aqi");
 																//transfer in progress event for read
 				CORE_CRITICAL_IRQ_ENABLE();
 

@@ -61,23 +61,20 @@ void Gpio_enable()
  *
  */
 
-
-void event_handler()
+uint16_t event_handler()
 {
-	if (event==true)                           //if event true then i2c functions
-	{                                          //change the flag to false
+	float read;
+                                         //change the flag to false
+		LOG_INFO("\nHUMID\n");
 		init_i2c();                            //calling init i2c
 		timerWaitUs(80000);                    //waiting for 80 ms power up time
 		transfer_i2c();                        //write to i2c temperature sensor
-		timerWaitUs(5000);                     //wait for some time for transfer
-//		float read=read_temp_i2c();            //read the temperature
-//		LOG_INFO("read=%f",read);              //log the temperature
+		timerWaitUs(50000);                     //wait for some time for transfer
+		read=read_temp_i2c();            //read the temperature
+		LOG_INFO("Read rL humdity=%f",read);              //log the temperature
 		event=0;
-	}
-	if (event==false)                          //if event flag is false then disable gpio and stop i2c transfer
-	{
-		Gpio_disable();
-	}
+
+	return (uint16_t)read;
 
 }
 
@@ -149,7 +146,7 @@ void transfer_i2c()
 	I2C_TransferSeq_TypeDef seq;                                                   //defining transfer variable
 	seq.addr = slave_address << 1;                                                 //shifting the slave address by one
 	seq.flags = I2C_FLAG_WRITE;													   //i2c write mode
-	seq.buf[0].data = &write_data;                                                 //selecting no hold master mode
+	seq.buf[0].data = &no_hold_master;                                                 //selecting no hold master mode
 	seq.buf[0].len = one_byte;                                                     //writing one byte of data
 
 	check=I2CSPM_Transfer(I2C0,&seq);                                              //checking transfer status
@@ -195,6 +192,60 @@ float read_temp_i2c()
 	LOG_INFO("temperature_val: %f",temp_val);                                 //log temperature value
 	return temp_val;                                                          //return temperature value
 
+}
+
+uint16_t READ_DATA_I2C(I2C_TransferSeq_TypeDef structure_init, uint8_t len)
+{
+	I2C_TransferReturn_TypeDef check;
+	uint8_t received_aqi[2] = {0};			//receiving data
+	uint16_t read_data;
+//	uint64_t read_data_tvoc;
+	structure_init.addr = 0x5A << 1;
+	structure_init.flags= I2C_FLAG_READ;
+
+	structure_init.buf[0].data=&received_aqi;
+	structure_init.buf[0].len=len;
+	check=I2CSPM_Transfer(I2C0,&structure_init);
+
+	if(check != i2cTransferDone)
+	{
+		LOG_INFO("I2c Transaction in progress");
+	}
+	if(len==1)
+	{
+		read_data = received_aqi[0];
+		return read_data;
+	}
+	else if(len==2)
+	{
+
+
+		read_data = received_aqi[0];
+
+		read_data <<= 8;
+
+		read_data	|=(received_aqi[1]);
+
+
+	}
+
+	return read_data;
+
+}
+
+void WRITE_DATA_I2C(I2C_TransferSeq_TypeDef init,uint16_t len)
+{
+	{
+		I2C_TransferReturn_TypeDef ret;
+		init.buf[0].len=len;
+		init.flags= I2C_FLAG_WRITE;
+		ret=I2CSPM_Transfer(I2C0,&init);
+		if(ret != i2cTransferDone)
+		{
+			LOG_ERROR("I2C Write error");
+			return;
+		}
+	}
 }
 
 

@@ -16,59 +16,51 @@ extern int bluetooth;						//bluetooth variable to check for the timer event int
 extern int bluetooth_i2c;					//bluetooth i2c varibale check for the i2c event occured in the interrupt like read or write
 
 
-
-
 /**
  * state machine of i2c for switching states as the events complete
  * @param -none
  * return- void
  */
 
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-uint16_t Maximum_humidity=0;
+uint16_t Maximum_humidity=0;			//keep a track of max humidity and aqi value
 uint16_t Maximum_aqi=0;
 
-#define Aqi_address 0x5A
-#define STATUS_REGISTER 0x00
-uint16_t FIELD_APP_VALID=(2^4);
-uint16_t APP_START_REGISTER=(0xF4);
-uint16_t FW_MODE_REGISTER=(2^7);
-uint16_t MEAS_MODE_REGISTER=(0X01);
+#define Aqi_address 0x5A				//aqi slave address
+#define STATUS_REGISTER 0x00			//aqi status register
+
+uint16_t APP_START_REGISTER=(0xF4);		//app start register command start the sensor in application mode
+uint16_t FW_MODE_REGISTER=(2^7);		//bit field inside status register to see if sensor is in firmware mode
+uint16_t MEAS_MODE_REGISTER=(0X01);		//meas mode register to set how reading will be obtained
 
 I2C_TransferSeq_TypeDef aqi_sensor;
 
-uint8_t write=0x00;
-uint8_t HW_id=0x20;
-uint8_t Software_reset=0xFF;
-uint8_t error_id=0xE0;
-
-#define APP_VALID 1<<4
+uint8_t write=0x00;						//status register value
+uint8_t HW_id=0x20;						//hardware id to see if it is the valid sensor
+uint8_t Software_reset=0xFF;			//to perform software reset
+uint8_t error_id=0xE0;					//error id register to see if there are any errors
+#define APP_VALID 1<<4					//bit field app valid in status register
 #define DATA_READY 1<<3
-#define FW_MODE 1<<7
-#define ALG_RES 0X02
-//extern uint8_t write_data;
-#define ALG_RESULT_DATA  0x02;
+#define FW_MODE 1<<7					//bit field inside status register to see if sensor is in firmware mode
+#define ALG_RES 0X02					//algorithmic result, msb being co2c pppm
 
+bool event_write_aqi_done=false;		//write event for aqi done
+bool event_write_aqi_progressing=false; //write event for aqi progressing
+bool event_configure_aqi=false;         //aqi configure event
 
-bool event_write_aqi_done=false;
-bool event_write_aqi_progressing=false;
-bool event_configure_aqi=false;
-
-uint8_t humid_STATE_MACHINE=0;
-uint8_t aqi_STATE_MACHINE=0;
-extern uint8_t received_data_aqi[2];
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+uint8_t humid_STATE_MACHINE=0;			//humidity state machine active
+uint8_t aqi_STATE_MACHINE=0;			//aqi state machine active
+extern uint8_t received_data_aqi[2];	//receive value of aqi ppm
 
 void aqi_sensor_init()
 {
 
 	I2C_TransferReturn_TypeDef check;
 
-	aqi_sensor.addr= 0x5A<<1;
+	aqi_sensor.addr= 0x5A<<1;														//The sensor hardware id is checked to see if it is the correct sensor
 	aqi_sensor.flags = I2C_FLAG_WRITE;
 	aqi_sensor.buf[0].data=&HW_id;
 	aqi_sensor.buf[0].len = one_byte;
-	check=I2CSPM_Transfer(I2C0,&aqi_sensor);                                              //checking transfer status
+	check=I2CSPM_Transfer(I2C0,&aqi_sensor);                                       //checking transfer status
 
 	if (check!=i2cTransferDone)                                                    //if transfer not done print error status
 	{
@@ -81,10 +73,10 @@ void aqi_sensor_init()
 	}
 	uint8_t read_val_hw_id;
 	read_val_hw_id=READ_DATA_I2C(aqi_sensor,1);
-	LOG_INFO("Read_data = %x\n",read_val_hw_id);
+	LOG_INFO("Read_data = %x\n",read_val_hw_id);										//hw id read should be 81
 	uint8_t read_val;
 	aqi_sensor.addr= 0x5A<<1;
-	aqi_sensor.flags = I2C_FLAG_WRITE;
+	aqi_sensor.flags = I2C_FLAG_WRITE;													//checking for the the status register value
 	aqi_sensor.buf[0].data=&write;
 	aqi_sensor.buf[0].len = one_byte;
 	check=I2CSPM_Transfer(I2C0,&aqi_sensor);                                              //checking transfer status
@@ -101,7 +93,7 @@ void aqi_sensor_init()
 
 	read_val=READ_DATA_I2C(aqi_sensor,1);
 	LOG_INFO("Status  Register = %x\n",read_val);
-	I2C_TransferReturn_TypeDef check_ERROR_ID;
+	I2C_TransferReturn_TypeDef check_ERROR_ID;										//checking for any error, if there are no errors obtained from the sensor the sensor will read 0
 	uint8_t read_val_ERROR_ID;
 	aqi_sensor.addr= 0x5A<<1;
 	aqi_sensor.flags = I2C_FLAG_WRITE;
@@ -121,64 +113,64 @@ void aqi_sensor_init()
 		read_val_ERROR_ID=READ_DATA_I2C(aqi_sensor,1);
 		LOG_INFO("Status  Register = %x\n",read_val_ERROR_ID);
 
-	if(read_val & 1<<4)
+	if(read_val & APP_VALID)																//checking to see if valid application has been loaded
 	{
 		LOG_INFO("APP_VALID 1: Valid application firmware has been loaded\n");
 	}
-	uint8_t mode=APP_START_REGISTER;
+	uint8_t mode=APP_START_REGISTER;												//setup write to application start
 
 	aqi_sensor.buf[0].data=&mode;
-//	timerWaitUs(10000);
+
 	WRITE_DATA_I2C(aqi_sensor,1);
-//	timerWaitUs(80000);
+
 
 	LOG_INFO("Status register monitored again \n");
 
-//	mode=STATUS_REGISTER;
-	aqi_sensor.buf[0].data=&write;
+
+	aqi_sensor.buf[0].data=&write;													//checking the status register again
 
 	WRITE_DATA_I2C(aqi_sensor,1);
-//	timerWaitUs(10000);
+
 
 	read_val=READ_DATA_I2C(aqi_sensor,1);
 	LOG_INFO("Status  Register = %x\n",read_val);
 
-	if(read_val & 1<<7)
+	if(read_val & FW_MODE)
 	{
-		LOG_INFO("firmware mode\n");
+		LOG_INFO("firmware mode\n");											//if msb set in status register, sensor is in firmware mode
 	}
-//	timerWaitUs(10000);
+
 
 	//  Mode 1: Constant power mode, IAQ measurement every second, WRITING TO MEAS REGISTER
 	I2C_TransferSeq_TypeDef aqi_sensor_change_mode;
 
 	aqi_sensor_change_mode.addr= Aqi_address << 1;
-	uint8_t cmd[2]={ 0x01, 0x18}; //This is Single byte register, which is used to enable sensor drive mode and interrupts.
+	uint8_t cmd[2]={ 0x01, 0x18}; 				//This is Single byte register, which is used to enable sensor drive mode and interrupts.
 
 	aqi_sensor_change_mode.buf[0].data=cmd;
 	WRITE_DATA_I2C(aqi_sensor_change_mode,2);
-//	timerWaitUs(10000);
 
-	cmd[0]=MEAS_MODE_REGISTER;
+
+	cmd[0]=MEAS_MODE_REGISTER;								//check to see the value in measure mode register for the data drive mode bit and interrupt bit
 	aqi_sensor_change_mode.buf[0].data=cmd;
 	WRITE_DATA_I2C(aqi_sensor_change_mode,1);
-//	timerWaitUs(10000);
+
 	uint16_t value_read;
 	value_read=READ_DATA_I2C(aqi_sensor_change_mode,1);
 	LOG_INFO("MEAS MODE REGISTER = %x\n",value_read);
 	I2C_TransferSeq_TypeDef init;
 	uint16_t status_get;
-//	timerWaitUs(10000);
-	init.addr= Aqi_address << 1;
-//	uint16_t command=&write;
+
+	init.addr= Aqi_address << 1;											//monitoring status register again
+
 	init.buf[0].data=&write;
 
 	WRITE_DATA_I2C(init,1);
 
-//	timerWaitUs(10000);
+
 	status_get=READ_DATA_I2C(init,1);
-	LOG_INFO("STATUS REGISTER=%d\n",status_get);
-	if(status_get & DATA_READY)
+	LOG_INFO("STATUS REGISTER=%x\n",status_get);
+	if(status_get & DATA_READY)												//if status register 4th bit is set, the data is ready
 	{
 		init.addr= Aqi_address << 1;
 		uint16_t command=ALG_RES;
@@ -186,7 +178,8 @@ void aqi_sensor_init()
 
 		WRITE_DATA_I2C(init,1);
 
-//		timerWaitUs(10000);
+	//	for (long i=0;i<100000000000;i++)
+
 		status_get=READ_DATA_I2C(init,2);
 		LOG_INFO("value in data buffer aqi[0] is %d",received_data_aqi[0]);
 		LOG_INFO("value in data buffer aqi[1] is %d",received_data_aqi[1]);
@@ -227,84 +220,87 @@ void PersistentData(uint16_t ps_key , uint16_t value)
 
 
 
-///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-void state_machine_i2c_aqi()
+void state_machine_i2c_aqi()												//aqi state machine
 {
-//	if (humid_STATE_MACHINE!=1)
-//	{
-//		aqi_STATE_MACHINE=1;
-	switch(current_state_aqi)
+	CORE_ATOMIC_IRQ_DISABLE();
+	if (humid_STATE_MACHINE!=1)
 	{
-		case configure:
+		aqi_STATE_MACHINE=1;
+		switch(current_state_aqi)
 		{
-			LOG_INFO("POWERING AQI I2C ON");                                                     //logging i2c power on in progress
-			if (event_configure_aqi==true)																 //if underflow interrupt occurs i2c operations done
+			case configure:
 			{
-				CORE_DECLARE_IRQ_STATE();
-				CORE_CRITICAL_IRQ_DISABLE();
-				event_configure_aqi=false;
-				CORE_CRITICAL_IRQ_ENABLE();
-				write_data=ALG_RESULT_DATA;
-				WRITE_READ_AQI(aqi_sensor,1,2);
-															//initialising i2c
-				current_state_aqi=read_aqi;                                     //current state changed to write i2c
-			}
-//			else
-//			{
-//				aqi_event=None_aqi;
-//				aqi_presentState=configured;
-//				NVIC_DisableIRQ(I2C0_IRQn);
-//			}
-//			CORE_ExitCritical(irqState);
-
-			break;
-		}
-		case read_aqi:
-		{
-			if(event_write_aqi_done==true)														//if 80 ms complete
-			{
-				CORE_DECLARE_IRQ_STATE();
-				CORE_CRITICAL_IRQ_DISABLE();
-				event_write_aqi_done=false;
-				CORE_CRITICAL_IRQ_ENABLE();
-				LOG_INFO("value in data buffer aqi[0] is %d",received_data_aqi[0]);
-				LOG_INFO("value in data buffer aqi[1] is %d",received_data_aqi[1]);
-				uint16_t aqi_ppm=received_data_aqi[0]<<8;
-				aqi_ppm=aqi_ppm|received_data_aqi[1];
-				LOG_INFO("value in data buffer aqi[0] is %d",received_data_aqi[0]);
-				LOG_INFO("value in data buffer aqi[1] is %d",received_data_aqi[1]);
-				LOG_INFO("PPM VALUE=%d",aqi_ppm);
-				displayPrintf(DISPLAY_ROW_MAX,"%d",aqi_ppm);
-				if(aqi_ppm>Maximum_aqi)
+				LOG_INFO("POWERING AQI I2C ON");                                     //logging i2c power on in progress
+				if (event_configure_aqi==true)										//if underflow interrupt occurs i2c operations done
 				{
-					Maximum_aqi=aqi_ppm;
-					PersistentData(Air_quality_index_key,Maximum_aqi);
+					LOG_INFO("event_configure_aqi==true");
+					CORE_DECLARE_IRQ_STATE();
+					CORE_CRITICAL_IRQ_DISABLE();
+					event_configure_aqi=false;										//configure event made false
+					CORE_CRITICAL_IRQ_ENABLE();
+					WRITE_READ_AQI(1,2);											//write read the alg result command to obatin the ppm value
+
+					current_state_aqi=read_aqi;                                     //current state changed to read i2c
 				}
-				LOG_INFO("LOG 1111");
+				else
+				{
+					LOG_INFO("event_configure_aqi else");
+					current_state_aqi=configure;
 
-				current_state=configure;											//current state made read
+				}
+				CORE_ATOMIC_IRQ_ENABLE();
+				break;
 			}
-			else if(event_write_aqi_progressing==true)
+			case read_aqi:
 			{
-				CORE_DECLARE_IRQ_STATE();
-				CORE_CRITICAL_IRQ_DISABLE();
-				event_write_aqi_progressing=false;
-				CORE_CRITICAL_IRQ_ENABLE();
-				LOG_INFO("LOG 2222");
-				current_state=read_aqi;
+				CORE_ATOMIC_IRQ_DISABLE();
+				if(event_write_aqi_done==true)								//if write aqi done
+				{
+					LOG_INFO("event_write_aqi_done==true");
+					CORE_DECLARE_IRQ_STATE();
+					CORE_CRITICAL_IRQ_DISABLE();
+					event_write_aqi_done=false;
+					CORE_CRITICAL_IRQ_ENABLE();								//values are stored in big endian format
+					uint16_t aqi_ppm=received_data_aqi[0]<<8;				//changing the register data such that correct reading is read in a little endian architecture
+					aqi_ppm=aqi_ppm|received_data_aqi[1];
+					LOG_INFO("value in data buffer aqi[0] is %d",received_data_aqi[0]);
+					LOG_INFO("value in data buffer aqi[1] is %d",received_data_aqi[1]);
+					LOG_INFO("PPM VALUE=%d",aqi_ppm);
+					displayPrintf(DISPLAY_ROW_MAX,"%d",aqi_ppm);
+					displayPrintf(DISPLAY_ROW_ACTION,"PPM %d",aqi_ppm);
+					if(aqi_ppm>Maximum_aqi)
+					{														//if maximum value exceeded the data is stored in persistent memory
+						Maximum_aqi=aqi_ppm;
+						PersistentData(Air_quality_index_key,Maximum_aqi);
+					}
+					LOG_INFO("LOG 1");
+
+					current_state=configure;								//current state made configure
+				}
+				else if(event_write_aqi_progressing==true)
+				{
+					LOG_INFO("event_write_aqi_progressing==true");
+					CORE_DECLARE_IRQ_STATE();
+					CORE_CRITICAL_IRQ_DISABLE();
+					event_write_aqi_progressing=false;					//if i2c transaction not complete
+					CORE_CRITICAL_IRQ_ENABLE();
+					LOG_INFO("LOG 2");
+					current_state=read_aqi;
+				}
+				aqi_STATE_MACHINE=0;
+
+				CORE_ATOMIC_IRQ_DISABLE();
+				break;
 			}
-//			aqi_STATE_MACHINE=0;
-
-
-			break;
 		}
 	}
 
 }
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 
 void state_machine_i2c_humidity()
 {
+
 	switch(current_state)
 	{
 		case power_up:
@@ -425,8 +421,10 @@ void state_machine_i2c_humidity()
 			sleep_m=0;
 
 			current_state=power_up;															//current state made power up
+
 		}
 			break;
+
 	}
 
 
