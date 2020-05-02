@@ -59,764 +59,31 @@
     </characteristic>
   </service>
   
-  <!--Environmental Sensing-->
-  <service advertise="false" id="environmental_sensing" name="Environmental Sensing" requirement="mandatory" sourceId="org.bluetooth.service.environmental_sensing" type="primary" uuid="181A">
-    <informativeText>Abstract:  This service exposes measurement data from an environmental sensor intended for sports and fitness applications. A wide range of environmental parameters is supported.  Summary:  The Environmental Sensing Service (ESS) exposes measurement data from an environmental sensor intended for sports and fitness applications. A wide range of environmental parameters is supported.  </informativeText>
+  <!--Silicon Labs OTA-->
+  <service advertise="false" id="ota" name="Silicon Labs OTA" requirement="mandatory" sourceId="com.silabs.service.ota" type="primary" uuid="1D14D6EE-FD63-4FA1-BFA4-8F47B42119F0">
+    <informativeText>Abstract:  The Silicon Labs OTA Service enables over-the-air firmware update of the device.  </informativeText>
     
-    <!--Descriptor Value Changed-->
-    <characteristic id="descriptor_value_changed" name="Descriptor Value Changed" sourceId="org.bluetooth.characteristic.descriptor_value_changed" uuid="2A7D">
-      <informativeText/>
-      <value length="1" type="hex" variable_length="false"/>
-      <properties indicate="true" indicate_requirement="mandatory" notify="false" notify_requirement="excluded" read="false" read_requirement="excluded" reliable_write="false" reliable_write_requirement="excluded" write="false" write_no_response="false" write_no_response_requirement="excluded" write_requirement="excluded"/>
+    <!--Silicon Labs OTA Control-->
+    <characteristic id="ota_control" name="Silicon Labs OTA Control" sourceId="com.silabs.characteristic.ota_control" uuid="F7BF3564-FB6D-4E53-88A4-5E37E0326063">
+      <informativeText>Abstract:  Silicon Labs OTA Control.  </informativeText>
+      <value length="1" type="user" variable_length="false"/>
+      <properties indicate="false" indicate_requirement="excluded" notify="false" notify_requirement="excluded" read="false" read_requirement="excluded" reliable_write="false" reliable_write_requirement="excluded" write="true" write_no_response="false" write_no_response_requirement="excluded" write_requirement="mandatory"/>
     </characteristic>
     
-    <!--Apparent Wind Direction-->
-    <characteristic id="apparent_wind_direction" name="Apparent Wind Direction" sourceId="org.bluetooth.characteristic.apparent_wind_direction" uuid="2A73">
-      <informativeText/>
-      <value length="2" type="hex" variable_length="false"/>
-      <properties indicate="false" indicate_requirement="excluded" notify="false" notify_requirement="optional" read="true" read_requirement="mandatory" reliable_write="false" reliable_write_requirement="excluded" write="false" write_no_response="false" write_no_response_requirement="excluded" write_requirement="excluded"/>
-      
-      <!--Environmental Sensing Measurement-->
-      <descriptor id="es_measurement" name="Environmental Sensing Measurement" sourceId="org.bluetooth.descriptor.es_measurement" uuid="290C">
-        <properties read="true" read_requirement="mandatory" write="false" write_requirement="excluded"/>
-        <value length="1" type="hex" variable_length="false"/>
-      </descriptor>
-      
-      <!--Environmental Sensing Trigger Setting-->
-      <descriptor id="es_trigger_setting" name="Environmental Sensing Trigger Setting" sourceId="org.bluetooth.descriptor.es_trigger_setting" uuid="290D">
-        <properties read="true" read_requirement="mandatory" write="false" write_requirement="c1"/>
-        <value length="1" type="hex" variable_length="false"/>
-      </descriptor>
-      
-      <!--Environmental Sensing Configuration-->
-      <descriptor id="es_configuration" name="Environmental Sensing Configuration" sourceId="org.bluetooth.descriptor.es_configuration" uuid="290B">
-        <properties read="true" read_requirement="mandatory" write="false" write_requirement="c1"/>
-        <value length="1" type="hex" variable_length="false"/>
-      </descriptor>
-      
-      <!--Characteristic User Description-->
-      <descriptor id="characteristic_user_description" name="Characteristic User Description" sourceId="org.bluetooth.descriptor.gatt.characteristic_user_description" uuid="2901">
-        <properties read="true" read_requirement="mandatory" write="false" write_requirement="optional"/>
-        <value length="1" type="utf-8" variable_length="false"/>
-      </descriptor>
-      
-      <!--Valid Range-->
-      <descriptor id="valid_range" name="Valid Range" sourceId="org.bluetooth.descriptor.valid_range" uuid="2906">
-        <properties read="true" read_requirement="mandatory" write="false" write_requirement="excluded"/>
-        <value length="4" type="hex" variable_length="false"/>
-      </descriptor>
-    </characteristic>
-    
-    <!--Apparent Wind Speed-->
-    <characteristic id="apparent_wind_speed" name="Apparent Wind Speed" sourceId="org.bluetooth.characteristic.apparent_wind_speed" uuid="2A72">
-      <informativeText/>
-      <value length="2" type="hex" variable_length="false"/>
-      <properties indicate="false" indicate_requirement="excluded" notify="false" notify_requirement="optional" read="true" read_requirement="mandatory" reliable_write="false" reliable_write_requirement="excluded" write="false" write_no_response="false" write_no_response_requirement="excluded" write_requirement="excluded"/>
-      
-      <!--Environmental Sensing Measurement-->
-      <descriptor id="es_measurement_2" name="Environmental Sensing Measurement" sourceId="org.bluetooth.descriptor.es_measurement" uuid="290C">
-        <properties read="true" read_requirement="mandatory" write="false" write_requirement="excluded"/>
-        <value length="1" type="hex" variable_length="false"/>
-      </descriptor>
-      
-      <!--Environmental Sensing Trigger Setting-->
-      <descriptor id="es_trigger_setting_2" name="Environmental Sensing Trigger Setting" sourceId="org.bluetooth.descriptor.es_trigger_setting" uuid="290D">
-        <properties read="true" read_requirement="mandatory" write="false" write_requirement="c1"/>
-        <value length="1" type="hex" variable_length="false"/>
-      </descriptor>
-      
-      <!--Environmental Sensing Configuration-->
-      <descriptor id="es_configuration_2" name="Environmental Sensing Configuration" sourceId="org.bluetooth.descriptor.es_configuration" uuid="290B">
-        <properties read="true" read_requirement="mandatory" write="false" write_requirement="c1"/>
-        <value length="1" type="hex" variable_length="false"/>
-      </descriptor>
-      
-      <!--Characteristic User Description-->
-      <descriptor id="characteristic_user_description_2" name="Characteristic User Description" sourceId="org.bluetooth.descriptor.gatt.characteristic_user_description" uuid="2901">
-        <properties read="true" read_requirement="mandatory" write="false" write_requirement="optional"/>
-        <value length="1" type="utf-8" variable_length="false"/>
-      </descriptor>
-      
-      <!--Valid Range-->
-      <descriptor id="valid_range_2" name="Valid Range" sourceId="org.bluetooth.descriptor.valid_range" uuid="2906">
-        <properties read="true" read_requirement="mandatory" write="false" write_requirement="excluded"/>
-        <value length="4" type="hex" variable_length="false"/>
-      </descriptor>
-    </characteristic>
-    
-    <!--Dew Point-->
-    <characteristic id="dew_point" name="Dew Point" sourceId="org.bluetooth.characteristic.dew_point" uuid="2A7B">
-      <informativeText/>
-      <value length="1" type="hex" variable_length="false"/>
-      <properties indicate="false" indicate_requirement="excluded" notify="false" notify_requirement="optional" read="true" read_requirement="mandatory" reliable_write="false" reliable_write_requirement="excluded" write="false" write_no_response="false" write_no_response_requirement="excluded" write_requirement="excluded"/>
-      
-      <!--Environmental Sensing Measurement-->
-      <descriptor id="es_measurement_3" name="Environmental Sensing Measurement" sourceId="org.bluetooth.descriptor.es_measurement" uuid="290C">
-        <properties read="true" read_requirement="mandatory" write="false" write_requirement="excluded"/>
-        <value length="1" type="hex" variable_length="false"/>
-      </descriptor>
-      
-      <!--Environmental Sensing Trigger Setting-->
-      <descriptor id="es_trigger_setting_3" name="Environmental Sensing Trigger Setting" sourceId="org.bluetooth.descriptor.es_trigger_setting" uuid="290D">
-        <properties read="true" read_requirement="mandatory" write="false" write_requirement="c1"/>
-        <value length="1" type="hex" variable_length="false"/>
-      </descriptor>
-      
-      <!--Environmental Sensing Configuration-->
-      <descriptor id="es_configuration_3" name="Environmental Sensing Configuration" sourceId="org.bluetooth.descriptor.es_configuration" uuid="290B">
-        <properties read="true" read_requirement="mandatory" write="false" write_requirement="c1"/>
-        <value length="1" type="hex" variable_length="false"/>
-      </descriptor>
-      
-      <!--Characteristic User Description-->
-      <descriptor id="characteristic_user_description_3" name="Characteristic User Description" sourceId="org.bluetooth.descriptor.gatt.characteristic_user_description" uuid="2901">
-        <properties read="true" read_requirement="mandatory" write="false" write_requirement="optional"/>
-        <value length="1" type="utf-8" variable_length="false"/>
-      </descriptor>
-      
-      <!--Valid Range-->
-      <descriptor id="valid_range_3" name="Valid Range" sourceId="org.bluetooth.descriptor.valid_range" uuid="2906">
-        <properties read="true" read_requirement="mandatory" write="false" write_requirement="excluded"/>
-        <value length="2" type="hex" variable_length="false"/>
-      </descriptor>
-    </characteristic>
-    
-    <!--Elevation-->
-    <characteristic id="elevation" name="Elevation" sourceId="org.bluetooth.characteristic.elevation" uuid="2A6C">
-      <informativeText/>
-      <value length="3" type="hex" variable_length="false"/>
-      <properties indicate="false" indicate_requirement="excluded" notify="false" notify_requirement="optional" read="true" read_requirement="mandatory" reliable_write="false" reliable_write_requirement="excluded" write="false" write_no_response="false" write_no_response_requirement="excluded" write_requirement="excluded"/>
-      
-      <!--Environmental Sensing Measurement-->
-      <descriptor id="es_measurement_4" name="Environmental Sensing Measurement" sourceId="org.bluetooth.descriptor.es_measurement" uuid="290C">
-        <properties read="true" read_requirement="mandatory" write="false" write_requirement="excluded"/>
-        <value length="1" type="hex" variable_length="false"/>
-      </descriptor>
-      
-      <!--Environmental Sensing Trigger Setting-->
-      <descriptor id="es_trigger_setting_4" name="Environmental Sensing Trigger Setting" sourceId="org.bluetooth.descriptor.es_trigger_setting" uuid="290D">
-        <properties read="true" read_requirement="mandatory" write="false" write_requirement="c1"/>
-        <value length="1" type="hex" variable_length="false"/>
-      </descriptor>
-      
-      <!--Environmental Sensing Configuration-->
-      <descriptor id="es_configuration_4" name="Environmental Sensing Configuration" sourceId="org.bluetooth.descriptor.es_configuration" uuid="290B">
-        <properties read="true" read_requirement="mandatory" write="false" write_requirement="c1"/>
-        <value length="1" type="hex" variable_length="false"/>
-      </descriptor>
-      
-      <!--Characteristic User Description-->
-      <descriptor id="characteristic_user_description_4" name="Characteristic User Description" sourceId="org.bluetooth.descriptor.gatt.characteristic_user_description" uuid="2901">
-        <properties read="true" read_requirement="mandatory" write="false" write_requirement="optional"/>
-        <value length="1" type="utf-8" variable_length="false"/>
-      </descriptor>
-      
-      <!--Valid Range-->
-      <descriptor id="valid_range_4" name="Valid Range" sourceId="org.bluetooth.descriptor.valid_range" uuid="2906">
-        <properties read="true" read_requirement="mandatory" write="false" write_requirement="excluded"/>
-        <value length="6" type="hex" variable_length="false"/>
-      </descriptor>
-    </characteristic>
-    
-    <!--Gust Factor-->
-    <characteristic id="gust_factor" name="Gust Factor" sourceId="org.bluetooth.characteristic.gust_factor" uuid="2A74">
-      <informativeText/>
-      <value length="1" type="hex" variable_length="false"/>
-      <properties indicate="false" indicate_requirement="excluded" notify="false" notify_requirement="optional" read="true" read_requirement="mandatory" reliable_write="false" reliable_write_requirement="excluded" write="false" write_no_response="false" write_no_response_requirement="excluded" write_requirement="excluded"/>
-      
-      <!--Environmental Sensing Measurement-->
-      <descriptor id="es_measurement_5" name="Environmental Sensing Measurement" sourceId="org.bluetooth.descriptor.es_measurement" uuid="290C">
-        <properties read="true" read_requirement="mandatory" write="false" write_requirement="excluded"/>
-        <value length="1" type="hex" variable_length="false"/>
-      </descriptor>
-      
-      <!--Environmental Sensing Trigger Setting-->
-      <descriptor id="es_trigger_setting_5" name="Environmental Sensing Trigger Setting" sourceId="org.bluetooth.descriptor.es_trigger_setting" uuid="290D">
-        <properties read="true" read_requirement="mandatory" write="false" write_requirement="c1"/>
-        <value length="1" type="hex" variable_length="false"/>
-      </descriptor>
-      
-      <!--Environmental Sensing Configuration-->
-      <descriptor id="es_configuration_5" name="Environmental Sensing Configuration" sourceId="org.bluetooth.descriptor.es_configuration" uuid="290B">
-        <properties read="true" read_requirement="mandatory" write="false" write_requirement="c1"/>
-        <value length="1" type="hex" variable_length="false"/>
-      </descriptor>
-      
-      <!--Characteristic User Description-->
-      <descriptor id="characteristic_user_description_5" name="Characteristic User Description" sourceId="org.bluetooth.descriptor.gatt.characteristic_user_description" uuid="2901">
-        <properties read="true" read_requirement="mandatory" write="false" write_requirement="optional"/>
-        <value length="1" type="utf-8" variable_length="false"/>
-      </descriptor>
-      
-      <!--Valid Range-->
-      <descriptor id="valid_range_5" name="Valid Range" sourceId="org.bluetooth.descriptor.valid_range" uuid="2906">
-        <properties read="true" read_requirement="mandatory" write="false" write_requirement="excluded"/>
-        <value length="2" type="hex" variable_length="false"/>
-      </descriptor>
-    </characteristic>
-    
-    <!--Heat Index-->
-    <characteristic id="heat_index" name="Heat Index" sourceId="org.bluetooth.characteristic.heat_index" uuid="2A7A">
-      <informativeText/>
-      <value length="1" type="hex" variable_length="false"/>
-      <properties indicate="false" indicate_requirement="excluded" notify="false" notify_requirement="optional" read="true" read_requirement="mandatory" reliable_write="false" reliable_write_requirement="excluded" write="false" write_no_response="false" write_no_response_requirement="excluded" write_requirement="excluded"/>
-      
-      <!--Environmental Sensing Measurement-->
-      <descriptor id="es_measurement_6" name="Environmental Sensing Measurement" sourceId="org.bluetooth.descriptor.es_measurement" uuid="290C">
-        <properties read="true" read_requirement="mandatory" write="false" write_requirement="excluded"/>
-        <value length="1" type="hex" variable_length="false"/>
-      </descriptor>
-      
-      <!--Environmental Sensing Trigger Setting-->
-      <descriptor id="es_trigger_setting_6" name="Environmental Sensing Trigger Setting" sourceId="org.bluetooth.descriptor.es_trigger_setting" uuid="290D">
-        <properties read="true" read_requirement="mandatory" write="false" write_requirement="c1"/>
-        <value length="1" type="hex" variable_length="false"/>
-      </descriptor>
-      
-      <!--Environmental Sensing Configuration-->
-      <descriptor id="es_configuration_6" name="Environmental Sensing Configuration" sourceId="org.bluetooth.descriptor.es_configuration" uuid="290B">
-        <properties read="true" read_requirement="mandatory" write="false" write_requirement="c1"/>
-        <value length="1" type="hex" variable_length="false"/>
-      </descriptor>
-      
-      <!--Characteristic User Description-->
-      <descriptor id="characteristic_user_description_6" name="Characteristic User Description" sourceId="org.bluetooth.descriptor.gatt.characteristic_user_description" uuid="2901">
-        <properties read="true" read_requirement="mandatory" write="false" write_requirement="optional"/>
-        <value length="1" type="utf-8" variable_length="false"/>
-      </descriptor>
-      
-      <!--Valid Range-->
-      <descriptor id="valid_range_6" name="Valid Range" sourceId="org.bluetooth.descriptor.valid_range" uuid="2906">
-        <properties read="true" read_requirement="mandatory" write="false" write_requirement="excluded"/>
-        <value length="2" type="hex" variable_length="false"/>
-      </descriptor>
-    </characteristic>
-    
-    <!--Humidity-->
-    <characteristic id="humidity" name="Humidity" sourceId="org.bluetooth.characteristic.humidity" uuid="2A6F">
-      <informativeText/>
-      <value length="2" type="hex" variable_length="false"/>
-      <properties indicate="false" indicate_requirement="excluded" notify="false" notify_requirement="optional" read="true" read_requirement="mandatory" reliable_write="false" reliable_write_requirement="excluded" write="false" write_no_response="false" write_no_response_requirement="excluded" write_requirement="excluded"/>
-      
-      <!--Environmental Sensing Measurement-->
-      <descriptor id="es_measurement_7" name="Environmental Sensing Measurement" sourceId="org.bluetooth.descriptor.es_measurement" uuid="290C">
-        <properties read="true" read_requirement="mandatory" write="false" write_requirement="excluded"/>
-        <value length="1" type="hex" variable_length="false"/>
-      </descriptor>
-      
-      <!--Environmental Sensing Trigger Setting-->
-      <descriptor id="es_trigger_setting_7" name="Environmental Sensing Trigger Setting" sourceId="org.bluetooth.descriptor.es_trigger_setting" uuid="290D">
-        <properties read="true" read_requirement="mandatory" write="false" write_requirement="c1"/>
-        <value length="1" type="hex" variable_length="false"/>
-      </descriptor>
-      
-      <!--Environmental Sensing Configuration-->
-      <descriptor id="es_configuration_7" name="Environmental Sensing Configuration" sourceId="org.bluetooth.descriptor.es_configuration" uuid="290B">
-        <properties read="true" read_requirement="mandatory" write="false" write_requirement="c1"/>
-        <value length="1" type="hex" variable_length="false"/>
-      </descriptor>
-      
-      <!--Characteristic User Description-->
-      <descriptor id="characteristic_user_description_7" name="Characteristic User Description" sourceId="org.bluetooth.descriptor.gatt.characteristic_user_description" uuid="2901">
-        <properties read="true" read_requirement="mandatory" write="false" write_requirement="optional"/>
-        <value length="1" type="utf-8" variable_length="false"/>
-      </descriptor>
-      
-      <!--Valid Range-->
-      <descriptor id="valid_range_7" name="Valid Range" sourceId="org.bluetooth.descriptor.valid_range" uuid="2906">
-        <properties read="true" read_requirement="mandatory" write="false" write_requirement="excluded"/>
-        <value length="4" type="hex" variable_length="false"/>
-      </descriptor>
-    </characteristic>
-    
-    <!--Irradiance-->
-    <characteristic id="irradiance" name="Irradiance" sourceId="org.bluetooth.characteristic.irradiance" uuid="2A77">
-      <informativeText/>
-      <value length="2" type="hex" variable_length="false"/>
-      <properties indicate="false" indicate_requirement="excluded" notify="false" notify_requirement="optional" read="true" read_requirement="mandatory" reliable_write="false" reliable_write_requirement="excluded" write="false" write_no_response="false" write_no_response_requirement="excluded" write_requirement="excluded"/>
-      
-      <!--Environmental Sensing Measurement-->
-      <descriptor id="es_measurement_8" name="Environmental Sensing Measurement" sourceId="org.bluetooth.descriptor.es_measurement" uuid="290C">
-        <properties read="true" read_requirement="mandatory" write="false" write_requirement="excluded"/>
-        <value length="1" type="hex" variable_length="false"/>
-      </descriptor>
-      
-      <!--Environmental Sensing Trigger Setting-->
-      <descriptor id="es_trigger_setting_8" name="Environmental Sensing Trigger Setting" sourceId="org.bluetooth.descriptor.es_trigger_setting" uuid="290D">
-        <properties read="true" read_requirement="mandatory" write="false" write_requirement="c1"/>
-        <value length="1" type="hex" variable_length="false"/>
-      </descriptor>
-      
-      <!--Environmental Sensing Configuration-->
-      <descriptor id="es_configuration_8" name="Environmental Sensing Configuration" sourceId="org.bluetooth.descriptor.es_configuration" uuid="290B">
-        <properties read="true" read_requirement="mandatory" write="false" write_requirement="c1"/>
-        <value length="1" type="hex" variable_length="false"/>
-      </descriptor>
-      
-      <!--Characteristic User Description-->
-      <descriptor id="characteristic_user_description_8" name="Characteristic User Description" sourceId="org.bluetooth.descriptor.gatt.characteristic_user_description" uuid="2901">
-        <properties read="true" read_requirement="mandatory" write="false" write_requirement="optional"/>
-        <value length="1" type="utf-8" variable_length="false"/>
-      </descriptor>
-      
-      <!--Valid Range-->
-      <descriptor id="valid_range_8" name="Valid Range" sourceId="org.bluetooth.descriptor.valid_range" uuid="2906">
-        <properties read="true" read_requirement="mandatory" write="false" write_requirement="excluded"/>
-        <value length="4" type="hex" variable_length="false"/>
-      </descriptor>
-    </characteristic>
-    
-    <!--Pollen Concentration-->
-    <characteristic id="pollen_concentration" name="Pollen Concentration" sourceId="org.bluetooth.characteristic.pollen_concentration" uuid="2A75">
-      <informativeText/>
-      <value length="3" type="hex" variable_length="false"/>
-      <properties indicate="false" indicate_requirement="excluded" notify="false" notify_requirement="optional" read="true" read_requirement="mandatory" reliable_write="false" reliable_write_requirement="excluded" write="false" write_no_response="false" write_no_response_requirement="excluded" write_requirement="excluded"/>
-      
-      <!--Environmental Sensing Measurement-->
-      <descriptor id="es_measurement_9" name="Environmental Sensing Measurement" sourceId="org.bluetooth.descriptor.es_measurement" uuid="290C">
-        <properties read="true" read_requirement="mandatory" write="false" write_requirement="excluded"/>
-        <value length="1" type="hex" variable_length="false"/>
-      </descriptor>
-      
-      <!--Environmental Sensing Trigger Setting-->
-      <descriptor id="es_trigger_setting_9" name="Environmental Sensing Trigger Setting" sourceId="org.bluetooth.descriptor.es_trigger_setting" uuid="290D">
-        <properties read="true" read_requirement="mandatory" write="false" write_requirement="c1"/>
-        <value length="1" type="hex" variable_length="false"/>
-      </descriptor>
-      
-      <!--Environmental Sensing Configuration-->
-      <descriptor id="es_configuration_9" name="Environmental Sensing Configuration" sourceId="org.bluetooth.descriptor.es_configuration" uuid="290B">
-        <properties read="true" read_requirement="mandatory" write="false" write_requirement="c1"/>
-        <value length="1" type="hex" variable_length="false"/>
-      </descriptor>
-      
-      <!--Characteristic User Description-->
-      <descriptor id="characteristic_user_description_9" name="Characteristic User Description" sourceId="org.bluetooth.descriptor.gatt.characteristic_user_description" uuid="2901">
-        <properties read="true" read_requirement="mandatory" write="false" write_requirement="optional"/>
-        <value length="1" type="utf-8" variable_length="false"/>
-      </descriptor>
-      
-      <!--Valid Range-->
-      <descriptor id="valid_range_9" name="Valid Range" sourceId="org.bluetooth.descriptor.valid_range" uuid="2906">
-        <properties read="true" read_requirement="mandatory" write="false" write_requirement="excluded"/>
-        <value length="6" type="hex" variable_length="false"/>
-      </descriptor>
-    </characteristic>
-    
-    <!--Rainfall-->
-    <characteristic id="rainfall" name="Rainfall" sourceId="org.bluetooth.characteristic.rainfall" uuid="2A78">
-      <informativeText/>
-      <value length="2" type="hex" variable_length="false"/>
-      <properties indicate="false" indicate_requirement="excluded" notify="false" notify_requirement="optional" read="true" read_requirement="mandatory" reliable_write="false" reliable_write_requirement="excluded" write="false" write_no_response="false" write_no_response_requirement="excluded" write_requirement="excluded"/>
-      
-      <!--Environmental Sensing Measurement-->
-      <descriptor id="es_measurement_10" name="Environmental Sensing Measurement" sourceId="org.bluetooth.descriptor.es_measurement" uuid="290C">
-        <properties read="true" read_requirement="mandatory" write="false" write_requirement="excluded"/>
-        <value length="1" type="hex" variable_length="false"/>
-      </descriptor>
-      
-      <!--Environmental Sensing Trigger Setting-->
-      <descriptor id="es_trigger_setting_10" name="Environmental Sensing Trigger Setting" sourceId="org.bluetooth.descriptor.es_trigger_setting" uuid="290D">
-        <properties read="true" read_requirement="mandatory" write="false" write_requirement="c1"/>
-        <value length="1" type="hex" variable_length="false"/>
-      </descriptor>
-      
-      <!--Environmental Sensing Configuration-->
-      <descriptor id="es_configuration_10" name="Environmental Sensing Configuration" sourceId="org.bluetooth.descriptor.es_configuration" uuid="290B">
-        <properties read="true" read_requirement="mandatory" write="false" write_requirement="c1"/>
-        <value length="1" type="hex" variable_length="false"/>
-      </descriptor>
-      
-      <!--Characteristic User Description-->
-      <descriptor id="characteristic_user_description_10" name="Characteristic User Description" sourceId="org.bluetooth.descriptor.gatt.characteristic_user_description" uuid="2901">
-        <properties read="true" read_requirement="mandatory" write="false" write_requirement="optional"/>
-        <value length="1" type="utf-8" variable_length="false"/>
-      </descriptor>
-      
-      <!--Valid Range-->
-      <descriptor id="valid_range_10" name="Valid Range" sourceId="org.bluetooth.descriptor.valid_range" uuid="2906">
-        <properties read="true" read_requirement="mandatory" write="false" write_requirement="excluded"/>
-        <value length="4" type="hex" variable_length="false"/>
-      </descriptor>
-    </characteristic>
-    
-    <!--Pressure-->
-    <characteristic id="pressure" name="Pressure" sourceId="org.bluetooth.characteristic.pressure" uuid="2A6D">
-      <informativeText/>
-      <value length="4" type="hex" variable_length="false"/>
-      <properties indicate="false" indicate_requirement="excluded" notify="false" notify_requirement="optional" read="true" read_requirement="mandatory" reliable_write="false" reliable_write_requirement="excluded" write="false" write_no_response="false" write_no_response_requirement="excluded" write_requirement="excluded"/>
-      
-      <!--Environmental Sensing Measurement-->
-      <descriptor id="es_measurement_11" name="Environmental Sensing Measurement" sourceId="org.bluetooth.descriptor.es_measurement" uuid="290C">
-        <properties read="true" read_requirement="mandatory" write="false" write_requirement="excluded"/>
-        <value length="1" type="hex" variable_length="false"/>
-      </descriptor>
-      
-      <!--Environmental Sensing Trigger Setting-->
-      <descriptor id="es_trigger_setting_11" name="Environmental Sensing Trigger Setting" sourceId="org.bluetooth.descriptor.es_trigger_setting" uuid="290D">
-        <properties read="true" read_requirement="mandatory" write="false" write_requirement="c1"/>
-        <value length="1" type="hex" variable_length="false"/>
-      </descriptor>
-      
-      <!--Environmental Sensing Configuration-->
-      <descriptor id="es_configuration_11" name="Environmental Sensing Configuration" sourceId="org.bluetooth.descriptor.es_configuration" uuid="290B">
-        <properties read="true" read_requirement="mandatory" write="false" write_requirement="c1"/>
-        <value length="1" type="hex" variable_length="false"/>
-      </descriptor>
-      
-      <!--Characteristic User Description-->
-      <descriptor id="characteristic_user_description_11" name="Characteristic User Description" sourceId="org.bluetooth.descriptor.gatt.characteristic_user_description" uuid="2901">
-        <properties read="true" read_requirement="mandatory" write="false" write_requirement="optional"/>
-        <value length="1" type="utf-8" variable_length="false"/>
-      </descriptor>
-      
-      <!--Valid Range-->
-      <descriptor id="valid_range_11" name="Valid Range" sourceId="org.bluetooth.descriptor.valid_range" uuid="2906">
-        <properties read="true" read_requirement="mandatory" write="false" write_requirement="excluded"/>
-        <value length="8" type="hex" variable_length="false"/>
-      </descriptor>
-    </characteristic>
-    
-    <!--Temperature-->
-    <characteristic id="temperature" name="Temperature" sourceId="org.bluetooth.characteristic.temperature" uuid="2A6E">
-      <informativeText/>
-      <value length="2" type="hex" variable_length="false"/>
-      <properties indicate="false" indicate_requirement="excluded" notify="false" notify_requirement="optional" read="true" read_requirement="mandatory" reliable_write="false" reliable_write_requirement="excluded" write="false" write_no_response="false" write_no_response_requirement="excluded" write_requirement="excluded"/>
-      
-      <!--Environmental Sensing Measurement-->
-      <descriptor id="es_measurement_12" name="Environmental Sensing Measurement" sourceId="org.bluetooth.descriptor.es_measurement" uuid="290C">
-        <properties read="true" read_requirement="mandatory" write="false" write_requirement="excluded"/>
-        <value length="1" type="hex" variable_length="false"/>
-      </descriptor>
-      
-      <!--Environmental Sensing Trigger Setting-->
-      <descriptor id="es_trigger_setting_12" name="Environmental Sensing Trigger Setting" sourceId="org.bluetooth.descriptor.es_trigger_setting" uuid="290D">
-        <properties read="true" read_requirement="mandatory" write="false" write_requirement="c1"/>
-        <value length="1" type="hex" variable_length="false"/>
-      </descriptor>
-      
-      <!--Environmental Sensing Configuration-->
-      <descriptor id="es_configuration_12" name="Environmental Sensing Configuration" sourceId="org.bluetooth.descriptor.es_configuration" uuid="290B">
-        <properties read="true" read_requirement="mandatory" write="false" write_requirement="c1"/>
-        <value length="1" type="hex" variable_length="false"/>
-      </descriptor>
-      
-      <!--Characteristic User Description-->
-      <descriptor id="characteristic_user_description_12" name="Characteristic User Description" sourceId="org.bluetooth.descriptor.gatt.characteristic_user_description" uuid="2901">
-        <properties read="true" read_requirement="mandatory" write="false" write_requirement="optional"/>
-        <value length="1" type="utf-8" variable_length="false"/>
-      </descriptor>
-      
-      <!--Valid Range-->
-      <descriptor id="valid_range_12" name="Valid Range" sourceId="org.bluetooth.descriptor.valid_range" uuid="2906">
-        <properties read="true" read_requirement="mandatory" write="false" write_requirement="excluded"/>
-        <value length="4" type="hex" variable_length="false"/>
-      </descriptor>
-    </characteristic>
-    
-    <!--True Wind Direction-->
-    <characteristic id="true_wind_direction" name="True Wind Direction" sourceId="org.bluetooth.characteristic.true_wind_direction" uuid="2A71">
-      <informativeText/>
-      <value length="2" type="hex" variable_length="false"/>
-      <properties indicate="false" indicate_requirement="excluded" notify="false" notify_requirement="optional" read="true" read_requirement="mandatory" reliable_write="false" reliable_write_requirement="excluded" write="false" write_no_response="false" write_no_response_requirement="excluded" write_requirement="excluded"/>
-      
-      <!--Environmental Sensing Measurement-->
-      <descriptor id="es_measurement_13" name="Environmental Sensing Measurement" sourceId="org.bluetooth.descriptor.es_measurement" uuid="290C">
-        <properties read="true" read_requirement="mandatory" write="false" write_requirement="excluded"/>
-        <value length="1" type="hex" variable_length="false"/>
-      </descriptor>
-      
-      <!--Environmental Sensing Trigger Setting-->
-      <descriptor id="es_trigger_setting_13" name="Environmental Sensing Trigger Setting" sourceId="org.bluetooth.descriptor.es_trigger_setting" uuid="290D">
-        <properties read="true" read_requirement="mandatory" write="false" write_requirement="c1"/>
-        <value length="1" type="hex" variable_length="false"/>
-      </descriptor>
-      
-      <!--Environmental Sensing Configuration-->
-      <descriptor id="es_configuration_13" name="Environmental Sensing Configuration" sourceId="org.bluetooth.descriptor.es_configuration" uuid="290B">
-        <properties read="true" read_requirement="mandatory" write="false" write_requirement="c1"/>
-        <value length="1" type="hex" variable_length="false"/>
-      </descriptor>
-      
-      <!--Characteristic User Description-->
-      <descriptor id="characteristic_user_description_13" name="Characteristic User Description" sourceId="org.bluetooth.descriptor.gatt.characteristic_user_description" uuid="2901">
-        <properties read="true" read_requirement="mandatory" write="false" write_requirement="optional"/>
-        <value length="1" type="utf-8" variable_length="false"/>
-      </descriptor>
-      
-      <!--Valid Range-->
-      <descriptor id="valid_range_13" name="Valid Range" sourceId="org.bluetooth.descriptor.valid_range" uuid="2906">
-        <properties read="true" read_requirement="mandatory" write="false" write_requirement="excluded"/>
-        <value length="4" type="hex" variable_length="false"/>
-      </descriptor>
-    </characteristic>
-    
-    <!--True Wind Speed-->
-    <characteristic id="true_wind_speed" name="True Wind Speed" sourceId="org.bluetooth.characteristic.true_wind_speed" uuid="2A70">
-      <informativeText/>
-      <value length="2" type="hex" variable_length="false"/>
-      <properties indicate="false" indicate_requirement="excluded" notify="false" notify_requirement="optional" read="true" read_requirement="mandatory" reliable_write="false" reliable_write_requirement="excluded" write="false" write_no_response="false" write_no_response_requirement="excluded" write_requirement="excluded"/>
-      
-      <!--Environmental Sensing Measurement-->
-      <descriptor id="es_measurement_14" name="Environmental Sensing Measurement" sourceId="org.bluetooth.descriptor.es_measurement" uuid="290C">
-        <properties read="true" read_requirement="mandatory" write="false" write_requirement="excluded"/>
-        <value length="1" type="hex" variable_length="false"/>
-      </descriptor>
-      
-      <!--Environmental Sensing Trigger Setting-->
-      <descriptor id="es_trigger_setting_14" name="Environmental Sensing Trigger Setting" sourceId="org.bluetooth.descriptor.es_trigger_setting" uuid="290D">
-        <properties read="true" read_requirement="mandatory" write="false" write_requirement="c1"/>
-        <value length="1" type="hex" variable_length="false"/>
-      </descriptor>
-      
-      <!--Environmental Sensing Configuration-->
-      <descriptor id="es_configuration_14" name="Environmental Sensing Configuration" sourceId="org.bluetooth.descriptor.es_configuration" uuid="290B">
-        <properties read="true" read_requirement="mandatory" write="false" write_requirement="c1"/>
-        <value length="1" type="hex" variable_length="false"/>
-      </descriptor>
-      
-      <!--Characteristic User Description-->
-      <descriptor id="characteristic_user_description_14" name="Characteristic User Description" sourceId="org.bluetooth.descriptor.gatt.characteristic_user_description" uuid="2901">
-        <properties read="true" read_requirement="mandatory" write="false" write_requirement="optional"/>
-        <value length="1" type="utf-8" variable_length="false"/>
-      </descriptor>
-      
-      <!--Valid Range-->
-      <descriptor id="valid_range_14" name="Valid Range" sourceId="org.bluetooth.descriptor.valid_range" uuid="2906">
-        <properties read="true" read_requirement="mandatory" write="false" write_requirement="excluded"/>
-        <value length="4" type="hex" variable_length="false"/>
-      </descriptor>
-    </characteristic>
-    
-    <!--UV Index-->
-    <characteristic id="uv_index" name="UV Index" sourceId="org.bluetooth.characteristic.uv_index" uuid="2A76">
-      <informativeText/>
-      <value length="1" type="hex" variable_length="false"/>
-      <properties indicate="false" indicate_requirement="excluded" notify="false" notify_requirement="optional" read="true" read_requirement="mandatory" reliable_write="false" reliable_write_requirement="excluded" write="false" write_no_response="false" write_no_response_requirement="excluded" write_requirement="excluded"/>
-      
-      <!--Environmental Sensing Measurement-->
-      <descriptor id="es_measurement_15" name="Environmental Sensing Measurement" sourceId="org.bluetooth.descriptor.es_measurement" uuid="290C">
-        <properties read="true" read_requirement="mandatory" write="false" write_requirement="excluded"/>
-        <value length="1" type="hex" variable_length="false"/>
-      </descriptor>
-      
-      <!--Environmental Sensing Trigger Setting-->
-      <descriptor id="es_trigger_setting_15" name="Environmental Sensing Trigger Setting" sourceId="org.bluetooth.descriptor.es_trigger_setting" uuid="290D">
-        <properties read="true" read_requirement="mandatory" write="false" write_requirement="c1"/>
-        <value length="1" type="hex" variable_length="false"/>
-      </descriptor>
-      
-      <!--Environmental Sensing Configuration-->
-      <descriptor id="es_configuration_15" name="Environmental Sensing Configuration" sourceId="org.bluetooth.descriptor.es_configuration" uuid="290B">
-        <properties read="true" read_requirement="mandatory" write="false" write_requirement="c1"/>
-        <value length="1" type="hex" variable_length="false"/>
-      </descriptor>
-      
-      <!--Characteristic User Description-->
-      <descriptor id="characteristic_user_description_15" name="Characteristic User Description" sourceId="org.bluetooth.descriptor.gatt.characteristic_user_description" uuid="2901">
-        <properties read="true" read_requirement="mandatory" write="false" write_requirement="optional"/>
-        <value length="1" type="utf-8" variable_length="false"/>
-      </descriptor>
-      
-      <!--Valid Range-->
-      <descriptor id="valid_range_15" name="Valid Range" sourceId="org.bluetooth.descriptor.valid_range" uuid="2906">
-        <properties read="true" read_requirement="mandatory" write="false" write_requirement="excluded"/>
-        <value length="2" type="hex" variable_length="false"/>
-      </descriptor>
-    </characteristic>
-    
-    <!--Wind Chill-->
-    <characteristic id="wind_chill" name="Wind Chill" sourceId="org.bluetooth.characteristic.wind_chill" uuid="2A79">
-      <informativeText/>
-      <value length="1" type="hex" variable_length="false"/>
-      <properties indicate="false" indicate_requirement="excluded" notify="false" notify_requirement="optional" read="true" read_requirement="mandatory" reliable_write="false" reliable_write_requirement="excluded" write="false" write_no_response="false" write_no_response_requirement="excluded" write_requirement="excluded"/>
-      
-      <!--Environmental Sensing Measurement-->
-      <descriptor id="es_measurement_16" name="Environmental Sensing Measurement" sourceId="org.bluetooth.descriptor.es_measurement" uuid="290C">
-        <properties read="true" read_requirement="mandatory" write="false" write_requirement="excluded"/>
-        <value length="1" type="hex" variable_length="false"/>
-      </descriptor>
-      
-      <!--Environmental Sensing Trigger Setting-->
-      <descriptor id="es_trigger_setting_16" name="Environmental Sensing Trigger Setting" sourceId="org.bluetooth.descriptor.es_trigger_setting" uuid="290D">
-        <properties read="true" read_requirement="mandatory" write="false" write_requirement="c1"/>
-        <value length="1" type="hex" variable_length="false"/>
-      </descriptor>
-      
-      <!--Environmental Sensing Configuration-->
-      <descriptor id="es_configuration_16" name="Environmental Sensing Configuration" sourceId="org.bluetooth.descriptor.es_configuration" uuid="290B">
-        <properties read="true" read_requirement="mandatory" write="false" write_requirement="c1"/>
-        <value length="1" type="hex" variable_length="false"/>
-      </descriptor>
-      
-      <!--Characteristic User Description-->
-      <descriptor id="characteristic_user_description_16" name="Characteristic User Description" sourceId="org.bluetooth.descriptor.gatt.characteristic_user_description" uuid="2901">
-        <properties read="true" read_requirement="mandatory" write="false" write_requirement="optional"/>
-        <value length="1" type="utf-8" variable_length="false"/>
-      </descriptor>
-      
-      <!--Valid Range-->
-      <descriptor id="valid_range_16" name="Valid Range" sourceId="org.bluetooth.descriptor.valid_range" uuid="2906">
-        <properties read="true" read_requirement="mandatory" write="false" write_requirement="excluded"/>
-        <value length="2" type="hex" variable_length="false"/>
-      </descriptor>
-    </characteristic>
-    
-    <!--Barometric Pressure Trend-->
-    <characteristic id="barometric_pressure_trend" name="Barometric Pressure Trend" sourceId="org.bluetooth.characteristic.barometric_pressure_trend" uuid="2AA3">
-      <informativeText/>
-      <value length="1" type="hex" variable_length="false"/>
-      <properties indicate="false" indicate_requirement="excluded" notify="false" notify_requirement="optional" read="true" read_requirement="mandatory" reliable_write="false" reliable_write_requirement="excluded" write="false" write_no_response="false" write_no_response_requirement="excluded" write_requirement="excluded"/>
-      
-      <!--Environmental Sensing Measurement-->
-      <descriptor id="es_measurement_17" name="Environmental Sensing Measurement" sourceId="org.bluetooth.descriptor.es_measurement" uuid="290C">
-        <properties read="true" read_requirement="mandatory" write="false" write_requirement="excluded"/>
-        <value length="1" type="hex" variable_length="false"/>
-      </descriptor>
-      
-      <!--Environmental Sensing Trigger Setting-->
-      <descriptor id="es_trigger_setting_17" name="Environmental Sensing Trigger Setting" sourceId="org.bluetooth.descriptor.es_trigger_setting" uuid="290D">
-        <properties read="true" read_requirement="mandatory" write="false" write_requirement="c1"/>
-        <value length="1" type="hex" variable_length="false"/>
-      </descriptor>
-      
-      <!--Environmental Sensing Configuration-->
-      <descriptor id="es_configuration_17" name="Environmental Sensing Configuration" sourceId="org.bluetooth.descriptor.es_configuration" uuid="290B">
-        <properties read="true" read_requirement="mandatory" write="false" write_requirement="c1"/>
-        <value length="1" type="hex" variable_length="false"/>
-      </descriptor>
-      
-      <!--Characteristic User Description-->
-      <descriptor id="characteristic_user_description_17" name="Characteristic User Description" sourceId="org.bluetooth.descriptor.gatt.characteristic_user_description" uuid="2901">
-        <properties read="true" read_requirement="mandatory" write="false" write_requirement="optional"/>
-        <value length="1" type="utf-8" variable_length="false"/>
-      </descriptor>
-      
-      <!--Valid Range-->
-      <descriptor id="valid_range_17" name="Valid Range" sourceId="org.bluetooth.descriptor.valid_range" uuid="2906">
-        <properties read="true" read_requirement="mandatory" write="false" write_requirement="excluded"/>
-        <value length="2" type="hex" variable_length="false"/>
-      </descriptor>
-    </characteristic>
-    
-    <!--Magnetic Declination-->
-    <characteristic id="magnetic_declination" name="Magnetic Declination" sourceId="org.bluetooth.characteristic.magnetic_declination" uuid="2A2C">
-      <informativeText/>
-      <value length="2" type="hex" variable_length="false"/>
-      <properties indicate="false" indicate_requirement="excluded" notify="false" notify_requirement="optional" read="true" read_requirement="mandatory" reliable_write="false" reliable_write_requirement="excluded" write="false" write_no_response="false" write_no_response_requirement="excluded" write_requirement="excluded"/>
-      
-      <!--Environmental Sensing Measurement-->
-      <descriptor id="es_measurement_18" name="Environmental Sensing Measurement" sourceId="org.bluetooth.descriptor.es_measurement" uuid="290C">
-        <properties read="true" read_requirement="mandatory" write="false" write_requirement="excluded"/>
-        <value length="1" type="hex" variable_length="false"/>
-      </descriptor>
-      
-      <!--Environmental Sensing Trigger Setting-->
-      <descriptor id="es_trigger_setting_18" name="Environmental Sensing Trigger Setting" sourceId="org.bluetooth.descriptor.es_trigger_setting" uuid="290D">
-        <properties read="true" read_requirement="mandatory" write="false" write_requirement="c1"/>
-        <value length="1" type="hex" variable_length="false"/>
-      </descriptor>
-      
-      <!--Environmental Sensing Configuration-->
-      <descriptor id="es_configuration_18" name="Environmental Sensing Configuration" sourceId="org.bluetooth.descriptor.es_configuration" uuid="290B">
-        <properties read="true" read_requirement="mandatory" write="false" write_requirement="c1"/>
-        <value length="1" type="hex" variable_length="false"/>
-      </descriptor>
-      
-      <!--Characteristic User Description-->
-      <descriptor id="characteristic_user_description_18" name="Characteristic User Description" sourceId="org.bluetooth.descriptor.gatt.characteristic_user_description" uuid="2901">
-        <properties read="true" read_requirement="mandatory" write="false" write_requirement="optional"/>
-        <value length="1" type="utf-8" variable_length="false"/>
-      </descriptor>
-      
-      <!--Valid Range-->
-      <descriptor id="valid_range_18" name="Valid Range" sourceId="org.bluetooth.descriptor.valid_range" uuid="2906">
-        <properties read="true" read_requirement="mandatory" write="false" write_requirement="excluded"/>
-        <value length="4" type="hex" variable_length="false"/>
-      </descriptor>
-    </characteristic>
-    
-    <!--Magnetic Flux Density - 2D-->
-    <characteristic id="magnetic_flux_density_2D" name="Magnetic Flux Density - 2D" sourceId="org.bluetooth.characteristic.magnetic_flux_density_2D" uuid="2AA0">
-      <informativeText/>
-      <value length="4" type="hex" variable_length="false"/>
-      <properties indicate="false" indicate_requirement="excluded" notify="false" notify_requirement="optional" read="true" read_requirement="mandatory" reliable_write="false" reliable_write_requirement="excluded" write="false" write_no_response="false" write_no_response_requirement="excluded" write_requirement="excluded"/>
-      
-      <!--Environmental Sensing Measurement-->
-      <descriptor id="es_measurement_19" name="Environmental Sensing Measurement" sourceId="org.bluetooth.descriptor.es_measurement" uuid="290C">
-        <properties read="true" read_requirement="mandatory" write="false" write_requirement="excluded"/>
-        <value length="1" type="hex" variable_length="false"/>
-      </descriptor>
-      
-      <!--Environmental Sensing Trigger Setting-->
-      <descriptor id="es_trigger_setting_19" name="Environmental Sensing Trigger Setting" sourceId="org.bluetooth.descriptor.es_trigger_setting" uuid="290D">
-        <properties read="true" read_requirement="mandatory" write="false" write_requirement="c1"/>
-        <value length="1" type="hex" variable_length="false"/>
-      </descriptor>
-      
-      <!--Environmental Sensing Configuration-->
-      <descriptor id="es_configuration_19" name="Environmental Sensing Configuration" sourceId="org.bluetooth.descriptor.es_configuration" uuid="290B">
-        <properties read="true" read_requirement="mandatory" write="false" write_requirement="c1"/>
-        <value length="1" type="hex" variable_length="false"/>
-      </descriptor>
-      
-      <!--Characteristic User Description-->
-      <descriptor id="characteristic_user_description_19" name="Characteristic User Description" sourceId="org.bluetooth.descriptor.gatt.characteristic_user_description" uuid="2901">
-        <properties read="true" read_requirement="mandatory" write="false" write_requirement="optional"/>
-        <value length="1" type="utf-8" variable_length="false"/>
-      </descriptor>
-      
-      <!--Valid Range-->
-      <descriptor id="valid_range_19" name="Valid Range" sourceId="org.bluetooth.descriptor.valid_range" uuid="2906">
-        <properties read="true" read_requirement="mandatory" write="false" write_requirement="excluded"/>
-        <value length="8" type="hex" variable_length="false"/>
-      </descriptor>
-    </characteristic>
-    
-    <!--Magnetic Flux Density - 3D-->
-    <characteristic id="magnetic_flux_density_3D" name="Magnetic Flux Density - 3D" sourceId="org.bluetooth.characteristic.magnetic_flux_density_3D" uuid="2AA1">
-      <informativeText/>
-      <value length="6" type="hex" variable_length="false"/>
-      <properties indicate="false" indicate_requirement="excluded" notify="false" notify_requirement="optional" read="true" read_requirement="mandatory" reliable_write="false" reliable_write_requirement="excluded" write="false" write_no_response="false" write_no_response_requirement="excluded" write_requirement="excluded"/>
-      
-      <!--Environmental Sensing Measurement-->
-      <descriptor id="es_measurement_20" name="Environmental Sensing Measurement" sourceId="org.bluetooth.descriptor.es_measurement" uuid="290C">
-        <properties read="true" read_requirement="mandatory" write="false" write_requirement="excluded"/>
-        <value length="1" type="hex" variable_length="false"/>
-      </descriptor>
-      
-      <!--Environmental Sensing Trigger Setting-->
-      <descriptor id="es_trigger_setting_20" name="Environmental Sensing Trigger Setting" sourceId="org.bluetooth.descriptor.es_trigger_setting" uuid="290D">
-        <properties read="true" read_requirement="mandatory" write="false" write_requirement="c1"/>
-        <value length="1" type="hex" variable_length="false"/>
-      </descriptor>
-      
-      <!--Environmental Sensing Configuration-->
-      <descriptor id="es_configuration_20" name="Environmental Sensing Configuration" sourceId="org.bluetooth.descriptor.es_configuration" uuid="290B">
-        <properties read="true" read_requirement="mandatory" write="false" write_requirement="c1"/>
-        <value length="1" type="hex" variable_length="false"/>
-      </descriptor>
-      
-      <!--Characteristic User Description-->
-      <descriptor id="characteristic_user_description_20" name="Characteristic User Description" sourceId="org.bluetooth.descriptor.gatt.characteristic_user_description" uuid="2901">
-        <properties read="true" read_requirement="mandatory" write="false" write_requirement="optional"/>
-        <value length="1" type="utf-8" variable_length="false"/>
-      </descriptor>
-      
-      <!--Valid Range-->
-      <descriptor id="valid_range_20" name="Valid Range" sourceId="org.bluetooth.descriptor.valid_range" uuid="2906">
-        <properties read="true" read_requirement="mandatory" write="false" write_requirement="excluded"/>
-        <value length="12" type="hex" variable_length="false"/>
-      </descriptor>
+    <!--Silicon Labs OTA Data-->
+    <characteristic id="ota_data" name="Silicon Labs OTA Data" sourceId="com.silabs.characteristic.ota_data" uuid="984227F3-34FC-4045-A5D0-2C581F81A153">
+      <informativeText>Abstract:  Silicon Labs OTA Data.  </informativeText>
+      <value length="20" type="hex" variable_length="false"/>
+      <properties indicate="false" indicate_requirement="excluded" notify="false" notify_requirement="excluded" read="false" read_requirement="excluded" reliable_write="false" reliable_write_requirement="excluded" write="false" write_no_response="true" write_no_response_requirement="mandatory" write_requirement="excluded"/>
     </characteristic>
   </service>
   
-  <!--Humidity-->
-  <service advertise="true" id="health_thermometer" name="Humidity" requirement="mandatory" sourceId="org.bluetooth.service.health_thermometer" type="primary" uuid="1809">
+  <!--Health Thermometer-->
+  <service advertise="true" id="health_thermometer" name="Health Thermometer" requirement="mandatory" sourceId="org.bluetooth.service.health_thermometer" type="primary" uuid="1809">
     <informativeText>Abstract: The Health Thermometer service exposes temperature and other data from a thermometer intended for healthcare and fitness applications. Summary: The Health Thermometer service is instantiated as a Primary Service. There are one or more instantiations of the Health Thermometer service per device claiming conformance with this specification. </informativeText>
     
-    <!--Humidity value-->
-    <characteristic id="temperature_measurement" name="Humidity value" sourceId="org.bluetooth.characteristic.temperature_measurement" uuid="2A1C">
+    <!--Temperature ASSIGNMENT5-->
+    <characteristic id="temperature_measurement" name="Temperature ASSIGNMENT5" sourceId="org.bluetooth.characteristic.temperature_measurement" uuid="2A1C">
       <informativeText/>
       <value length="17" type="hex" variable_length="false"/>
       <properties indicate="true" indicate_requirement="mandatory" notify="false" notify_requirement="excluded" read="false" read_requirement="excluded" reliable_write="false" reliable_write_requirement="excluded" write="false" write_no_response="false" write_no_response_requirement="excluded" write_requirement="excluded"/>
@@ -861,9 +128,761 @@
       </descriptor>
       
       <!--Valid Range-->
-      <descriptor id="valid_range_21" name="Valid Range" sourceId="org.bluetooth.descriptor.valid_range" uuid="2906">
+      <descriptor id="valid_range" name="Valid Range" sourceId="org.bluetooth.descriptor.valid_range" uuid="2906">
         <properties read="true" read_requirement="mandatory" write="false" write_requirement="excluded"/>
         <value length="4" type="hex" variable_length="false"/>
+      </descriptor>
+    </characteristic>
+  </service>
+  
+  <!--Environmental Sensing-->
+  <service advertise="false" id="environmental_sensing" name="Environmental Sensing" requirement="mandatory" sourceId="org.bluetooth.service.environmental_sensing" type="primary" uuid="181A">
+    <informativeText>Abstract:  This service exposes measurement data from an environmental sensor intended for sports and fitness applications. A wide range of environmental parameters is supported.  Summary:  The Environmental Sensing Service (ESS) exposes measurement data from an environmental sensor intended for sports and fitness applications. A wide range of environmental parameters is supported.  </informativeText>
+    
+    <!--Descriptor Value Changed-->
+    <characteristic id="descriptor_value_changed" name="Descriptor Value Changed" sourceId="org.bluetooth.characteristic.descriptor_value_changed" uuid="2A7D">
+      <informativeText/>
+      <value length="1" type="hex" variable_length="false"/>
+      <properties indicate="true" indicate_requirement="mandatory" notify="false" notify_requirement="excluded" read="false" read_requirement="excluded" reliable_write="false" reliable_write_requirement="excluded" write="false" write_no_response="false" write_no_response_requirement="excluded" write_requirement="excluded"/>
+    </characteristic>
+    
+    <!--Apparent Wind Direction-->
+    <characteristic id="apparent_wind_direction" name="Apparent Wind Direction" sourceId="org.bluetooth.characteristic.apparent_wind_direction" uuid="2A73">
+      <informativeText/>
+      <value length="2" type="hex" variable_length="false"/>
+      <properties indicate="false" indicate_requirement="excluded" notify="false" notify_requirement="optional" read="true" read_requirement="mandatory" reliable_write="false" reliable_write_requirement="excluded" write="false" write_no_response="false" write_no_response_requirement="excluded" write_requirement="excluded"/>
+      
+      <!--Environmental Sensing Measurement-->
+      <descriptor id="es_measurement" name="Environmental Sensing Measurement" sourceId="org.bluetooth.descriptor.es_measurement" uuid="290C">
+        <properties read="true" read_requirement="mandatory" write="false" write_requirement="excluded"/>
+        <value length="1" type="hex" variable_length="false"/>
+      </descriptor>
+      
+      <!--Environmental Sensing Trigger Setting-->
+      <descriptor id="es_trigger_setting" name="Environmental Sensing Trigger Setting" sourceId="org.bluetooth.descriptor.es_trigger_setting" uuid="290D">
+        <properties read="true" read_requirement="mandatory" write="false" write_requirement="c1"/>
+        <value length="1" type="hex" variable_length="false"/>
+      </descriptor>
+      
+      <!--Environmental Sensing Configuration-->
+      <descriptor id="es_configuration" name="Environmental Sensing Configuration" sourceId="org.bluetooth.descriptor.es_configuration" uuid="290B">
+        <properties read="true" read_requirement="mandatory" write="false" write_requirement="c1"/>
+        <value length="1" type="hex" variable_length="false"/>
+      </descriptor>
+      
+      <!--Characteristic User Description-->
+      <descriptor id="characteristic_user_description" name="Characteristic User Description" sourceId="org.bluetooth.descriptor.gatt.characteristic_user_description" uuid="2901">
+        <properties read="true" read_requirement="mandatory" write="false" write_requirement="optional"/>
+        <value length="1" type="utf-8" variable_length="false"/>
+      </descriptor>
+      
+      <!--Valid Range-->
+      <descriptor id="valid_range_2" name="Valid Range" sourceId="org.bluetooth.descriptor.valid_range" uuid="2906">
+        <properties read="true" read_requirement="mandatory" write="false" write_requirement="excluded"/>
+        <value length="4" type="hex" variable_length="false"/>
+      </descriptor>
+    </characteristic>
+    
+    <!--Apparent Wind Speed-->
+    <characteristic id="apparent_wind_speed" name="Apparent Wind Speed" sourceId="org.bluetooth.characteristic.apparent_wind_speed" uuid="2A72">
+      <informativeText/>
+      <value length="2" type="hex" variable_length="false"/>
+      <properties indicate="false" indicate_requirement="excluded" notify="false" notify_requirement="optional" read="true" read_requirement="mandatory" reliable_write="false" reliable_write_requirement="excluded" write="false" write_no_response="false" write_no_response_requirement="excluded" write_requirement="excluded"/>
+      
+      <!--Environmental Sensing Measurement-->
+      <descriptor id="es_measurement_2" name="Environmental Sensing Measurement" sourceId="org.bluetooth.descriptor.es_measurement" uuid="290C">
+        <properties read="true" read_requirement="mandatory" write="false" write_requirement="excluded"/>
+        <value length="1" type="hex" variable_length="false"/>
+      </descriptor>
+      
+      <!--Environmental Sensing Trigger Setting-->
+      <descriptor id="es_trigger_setting_2" name="Environmental Sensing Trigger Setting" sourceId="org.bluetooth.descriptor.es_trigger_setting" uuid="290D">
+        <properties read="true" read_requirement="mandatory" write="false" write_requirement="c1"/>
+        <value length="1" type="hex" variable_length="false"/>
+      </descriptor>
+      
+      <!--Environmental Sensing Configuration-->
+      <descriptor id="es_configuration_2" name="Environmental Sensing Configuration" sourceId="org.bluetooth.descriptor.es_configuration" uuid="290B">
+        <properties read="true" read_requirement="mandatory" write="false" write_requirement="c1"/>
+        <value length="1" type="hex" variable_length="false"/>
+      </descriptor>
+      
+      <!--Characteristic User Description-->
+      <descriptor id="characteristic_user_description_2" name="Characteristic User Description" sourceId="org.bluetooth.descriptor.gatt.characteristic_user_description" uuid="2901">
+        <properties read="true" read_requirement="mandatory" write="false" write_requirement="optional"/>
+        <value length="1" type="utf-8" variable_length="false"/>
+      </descriptor>
+      
+      <!--Valid Range-->
+      <descriptor id="valid_range_3" name="Valid Range" sourceId="org.bluetooth.descriptor.valid_range" uuid="2906">
+        <properties read="true" read_requirement="mandatory" write="false" write_requirement="excluded"/>
+        <value length="4" type="hex" variable_length="false"/>
+      </descriptor>
+    </characteristic>
+    
+    <!--Dew Point-->
+    <characteristic id="dew_point" name="Dew Point" sourceId="org.bluetooth.characteristic.dew_point" uuid="2A7B">
+      <informativeText/>
+      <value length="1" type="hex" variable_length="false"/>
+      <properties indicate="false" indicate_requirement="excluded" notify="false" notify_requirement="optional" read="true" read_requirement="mandatory" reliable_write="false" reliable_write_requirement="excluded" write="false" write_no_response="false" write_no_response_requirement="excluded" write_requirement="excluded"/>
+      
+      <!--Environmental Sensing Measurement-->
+      <descriptor id="es_measurement_3" name="Environmental Sensing Measurement" sourceId="org.bluetooth.descriptor.es_measurement" uuid="290C">
+        <properties read="true" read_requirement="mandatory" write="false" write_requirement="excluded"/>
+        <value length="1" type="hex" variable_length="false"/>
+      </descriptor>
+      
+      <!--Environmental Sensing Trigger Setting-->
+      <descriptor id="es_trigger_setting_3" name="Environmental Sensing Trigger Setting" sourceId="org.bluetooth.descriptor.es_trigger_setting" uuid="290D">
+        <properties read="true" read_requirement="mandatory" write="false" write_requirement="c1"/>
+        <value length="1" type="hex" variable_length="false"/>
+      </descriptor>
+      
+      <!--Environmental Sensing Configuration-->
+      <descriptor id="es_configuration_3" name="Environmental Sensing Configuration" sourceId="org.bluetooth.descriptor.es_configuration" uuid="290B">
+        <properties read="true" read_requirement="mandatory" write="false" write_requirement="c1"/>
+        <value length="1" type="hex" variable_length="false"/>
+      </descriptor>
+      
+      <!--Characteristic User Description-->
+      <descriptor id="characteristic_user_description_3" name="Characteristic User Description" sourceId="org.bluetooth.descriptor.gatt.characteristic_user_description" uuid="2901">
+        <properties read="true" read_requirement="mandatory" write="false" write_requirement="optional"/>
+        <value length="1" type="utf-8" variable_length="false"/>
+      </descriptor>
+      
+      <!--Valid Range-->
+      <descriptor id="valid_range_4" name="Valid Range" sourceId="org.bluetooth.descriptor.valid_range" uuid="2906">
+        <properties read="true" read_requirement="mandatory" write="false" write_requirement="excluded"/>
+        <value length="2" type="hex" variable_length="false"/>
+      </descriptor>
+    </characteristic>
+    
+    <!--Elevation-->
+    <characteristic id="elevation" name="Elevation" sourceId="org.bluetooth.characteristic.elevation" uuid="2A6C">
+      <informativeText/>
+      <value length="3" type="hex" variable_length="false"/>
+      <properties indicate="false" indicate_requirement="excluded" notify="false" notify_requirement="optional" read="true" read_requirement="mandatory" reliable_write="false" reliable_write_requirement="excluded" write="false" write_no_response="false" write_no_response_requirement="excluded" write_requirement="excluded"/>
+      
+      <!--Environmental Sensing Measurement-->
+      <descriptor id="es_measurement_4" name="Environmental Sensing Measurement" sourceId="org.bluetooth.descriptor.es_measurement" uuid="290C">
+        <properties read="true" read_requirement="mandatory" write="false" write_requirement="excluded"/>
+        <value length="1" type="hex" variable_length="false"/>
+      </descriptor>
+      
+      <!--Environmental Sensing Trigger Setting-->
+      <descriptor id="es_trigger_setting_4" name="Environmental Sensing Trigger Setting" sourceId="org.bluetooth.descriptor.es_trigger_setting" uuid="290D">
+        <properties read="true" read_requirement="mandatory" write="false" write_requirement="c1"/>
+        <value length="1" type="hex" variable_length="false"/>
+      </descriptor>
+      
+      <!--Environmental Sensing Configuration-->
+      <descriptor id="es_configuration_4" name="Environmental Sensing Configuration" sourceId="org.bluetooth.descriptor.es_configuration" uuid="290B">
+        <properties read="true" read_requirement="mandatory" write="false" write_requirement="c1"/>
+        <value length="1" type="hex" variable_length="false"/>
+      </descriptor>
+      
+      <!--Characteristic User Description-->
+      <descriptor id="characteristic_user_description_4" name="Characteristic User Description" sourceId="org.bluetooth.descriptor.gatt.characteristic_user_description" uuid="2901">
+        <properties read="true" read_requirement="mandatory" write="false" write_requirement="optional"/>
+        <value length="1" type="utf-8" variable_length="false"/>
+      </descriptor>
+      
+      <!--Valid Range-->
+      <descriptor id="valid_range_5" name="Valid Range" sourceId="org.bluetooth.descriptor.valid_range" uuid="2906">
+        <properties read="true" read_requirement="mandatory" write="false" write_requirement="excluded"/>
+        <value length="6" type="hex" variable_length="false"/>
+      </descriptor>
+    </characteristic>
+    
+    <!--Gust Factor-->
+    <characteristic id="gust_factor" name="Gust Factor" sourceId="org.bluetooth.characteristic.gust_factor" uuid="2A74">
+      <informativeText/>
+      <value length="1" type="hex" variable_length="false"/>
+      <properties indicate="false" indicate_requirement="excluded" notify="false" notify_requirement="optional" read="true" read_requirement="mandatory" reliable_write="false" reliable_write_requirement="excluded" write="false" write_no_response="false" write_no_response_requirement="excluded" write_requirement="excluded"/>
+      
+      <!--Environmental Sensing Measurement-->
+      <descriptor id="es_measurement_5" name="Environmental Sensing Measurement" sourceId="org.bluetooth.descriptor.es_measurement" uuid="290C">
+        <properties read="true" read_requirement="mandatory" write="false" write_requirement="excluded"/>
+        <value length="1" type="hex" variable_length="false"/>
+      </descriptor>
+      
+      <!--Environmental Sensing Trigger Setting-->
+      <descriptor id="es_trigger_setting_5" name="Environmental Sensing Trigger Setting" sourceId="org.bluetooth.descriptor.es_trigger_setting" uuid="290D">
+        <properties read="true" read_requirement="mandatory" write="false" write_requirement="c1"/>
+        <value length="1" type="hex" variable_length="false"/>
+      </descriptor>
+      
+      <!--Environmental Sensing Configuration-->
+      <descriptor id="es_configuration_5" name="Environmental Sensing Configuration" sourceId="org.bluetooth.descriptor.es_configuration" uuid="290B">
+        <properties read="true" read_requirement="mandatory" write="false" write_requirement="c1"/>
+        <value length="1" type="hex" variable_length="false"/>
+      </descriptor>
+      
+      <!--Characteristic User Description-->
+      <descriptor id="characteristic_user_description_5" name="Characteristic User Description" sourceId="org.bluetooth.descriptor.gatt.characteristic_user_description" uuid="2901">
+        <properties read="true" read_requirement="mandatory" write="false" write_requirement="optional"/>
+        <value length="1" type="utf-8" variable_length="false"/>
+      </descriptor>
+      
+      <!--Valid Range-->
+      <descriptor id="valid_range_6" name="Valid Range" sourceId="org.bluetooth.descriptor.valid_range" uuid="2906">
+        <properties read="true" read_requirement="mandatory" write="false" write_requirement="excluded"/>
+        <value length="2" type="hex" variable_length="false"/>
+      </descriptor>
+    </characteristic>
+    
+    <!--Heat Index-->
+    <characteristic id="heat_index" name="Heat Index" sourceId="org.bluetooth.characteristic.heat_index" uuid="2A7A">
+      <informativeText/>
+      <value length="1" type="hex" variable_length="false"/>
+      <properties indicate="false" indicate_requirement="excluded" notify="false" notify_requirement="optional" read="true" read_requirement="mandatory" reliable_write="false" reliable_write_requirement="excluded" write="false" write_no_response="false" write_no_response_requirement="excluded" write_requirement="excluded"/>
+      
+      <!--Environmental Sensing Measurement-->
+      <descriptor id="es_measurement_6" name="Environmental Sensing Measurement" sourceId="org.bluetooth.descriptor.es_measurement" uuid="290C">
+        <properties read="true" read_requirement="mandatory" write="false" write_requirement="excluded"/>
+        <value length="1" type="hex" variable_length="false"/>
+      </descriptor>
+      
+      <!--Environmental Sensing Trigger Setting-->
+      <descriptor id="es_trigger_setting_6" name="Environmental Sensing Trigger Setting" sourceId="org.bluetooth.descriptor.es_trigger_setting" uuid="290D">
+        <properties read="true" read_requirement="mandatory" write="false" write_requirement="c1"/>
+        <value length="1" type="hex" variable_length="false"/>
+      </descriptor>
+      
+      <!--Environmental Sensing Configuration-->
+      <descriptor id="es_configuration_6" name="Environmental Sensing Configuration" sourceId="org.bluetooth.descriptor.es_configuration" uuid="290B">
+        <properties read="true" read_requirement="mandatory" write="false" write_requirement="c1"/>
+        <value length="1" type="hex" variable_length="false"/>
+      </descriptor>
+      
+      <!--Characteristic User Description-->
+      <descriptor id="characteristic_user_description_6" name="Characteristic User Description" sourceId="org.bluetooth.descriptor.gatt.characteristic_user_description" uuid="2901">
+        <properties read="true" read_requirement="mandatory" write="false" write_requirement="optional"/>
+        <value length="1" type="utf-8" variable_length="false"/>
+      </descriptor>
+      
+      <!--Valid Range-->
+      <descriptor id="valid_range_7" name="Valid Range" sourceId="org.bluetooth.descriptor.valid_range" uuid="2906">
+        <properties read="true" read_requirement="mandatory" write="false" write_requirement="excluded"/>
+        <value length="2" type="hex" variable_length="false"/>
+      </descriptor>
+    </characteristic>
+    
+    <!--Humidity-->
+    <characteristic id="humidity" name="Humidity" sourceId="org.bluetooth.characteristic.humidity" uuid="2A6F">
+      <informativeText/>
+      <value length="2" type="hex" variable_length="false"/>
+      <properties indicate="false" indicate_requirement="excluded" notify="false" notify_requirement="optional" read="true" read_requirement="mandatory" reliable_write="false" reliable_write_requirement="excluded" write="false" write_no_response="false" write_no_response_requirement="excluded" write_requirement="excluded"/>
+      
+      <!--Environmental Sensing Measurement-->
+      <descriptor id="es_measurement_7" name="Environmental Sensing Measurement" sourceId="org.bluetooth.descriptor.es_measurement" uuid="290C">
+        <properties read="true" read_requirement="mandatory" write="false" write_requirement="excluded"/>
+        <value length="1" type="hex" variable_length="false"/>
+      </descriptor>
+      
+      <!--Environmental Sensing Trigger Setting-->
+      <descriptor id="es_trigger_setting_7" name="Environmental Sensing Trigger Setting" sourceId="org.bluetooth.descriptor.es_trigger_setting" uuid="290D">
+        <properties read="true" read_requirement="mandatory" write="false" write_requirement="c1"/>
+        <value length="1" type="hex" variable_length="false"/>
+      </descriptor>
+      
+      <!--Environmental Sensing Configuration-->
+      <descriptor id="es_configuration_7" name="Environmental Sensing Configuration" sourceId="org.bluetooth.descriptor.es_configuration" uuid="290B">
+        <properties read="true" read_requirement="mandatory" write="false" write_requirement="c1"/>
+        <value length="1" type="hex" variable_length="false"/>
+      </descriptor>
+      
+      <!--Characteristic User Description-->
+      <descriptor id="characteristic_user_description_7" name="Characteristic User Description" sourceId="org.bluetooth.descriptor.gatt.characteristic_user_description" uuid="2901">
+        <properties read="true" read_requirement="mandatory" write="false" write_requirement="optional"/>
+        <value length="1" type="utf-8" variable_length="false"/>
+      </descriptor>
+      
+      <!--Valid Range-->
+      <descriptor id="valid_range_8" name="Valid Range" sourceId="org.bluetooth.descriptor.valid_range" uuid="2906">
+        <properties read="true" read_requirement="mandatory" write="false" write_requirement="excluded"/>
+        <value length="4" type="hex" variable_length="false"/>
+      </descriptor>
+    </characteristic>
+    
+    <!--Irradiance-->
+    <characteristic id="irradiance" name="Irradiance" sourceId="org.bluetooth.characteristic.irradiance" uuid="2A77">
+      <informativeText/>
+      <value length="2" type="hex" variable_length="false"/>
+      <properties indicate="false" indicate_requirement="excluded" notify="false" notify_requirement="optional" read="true" read_requirement="mandatory" reliable_write="false" reliable_write_requirement="excluded" write="false" write_no_response="false" write_no_response_requirement="excluded" write_requirement="excluded"/>
+      
+      <!--Environmental Sensing Measurement-->
+      <descriptor id="es_measurement_8" name="Environmental Sensing Measurement" sourceId="org.bluetooth.descriptor.es_measurement" uuid="290C">
+        <properties read="true" read_requirement="mandatory" write="false" write_requirement="excluded"/>
+        <value length="1" type="hex" variable_length="false"/>
+      </descriptor>
+      
+      <!--Environmental Sensing Trigger Setting-->
+      <descriptor id="es_trigger_setting_8" name="Environmental Sensing Trigger Setting" sourceId="org.bluetooth.descriptor.es_trigger_setting" uuid="290D">
+        <properties read="true" read_requirement="mandatory" write="false" write_requirement="c1"/>
+        <value length="1" type="hex" variable_length="false"/>
+      </descriptor>
+      
+      <!--Environmental Sensing Configuration-->
+      <descriptor id="es_configuration_8" name="Environmental Sensing Configuration" sourceId="org.bluetooth.descriptor.es_configuration" uuid="290B">
+        <properties read="true" read_requirement="mandatory" write="false" write_requirement="c1"/>
+        <value length="1" type="hex" variable_length="false"/>
+      </descriptor>
+      
+      <!--Characteristic User Description-->
+      <descriptor id="characteristic_user_description_8" name="Characteristic User Description" sourceId="org.bluetooth.descriptor.gatt.characteristic_user_description" uuid="2901">
+        <properties read="true" read_requirement="mandatory" write="false" write_requirement="optional"/>
+        <value length="1" type="utf-8" variable_length="false"/>
+      </descriptor>
+      
+      <!--Valid Range-->
+      <descriptor id="valid_range_9" name="Valid Range" sourceId="org.bluetooth.descriptor.valid_range" uuid="2906">
+        <properties read="true" read_requirement="mandatory" write="false" write_requirement="excluded"/>
+        <value length="4" type="hex" variable_length="false"/>
+      </descriptor>
+    </characteristic>
+    
+    <!--Pollen Concentration-->
+    <characteristic id="pollen_concentration" name="Pollen Concentration" sourceId="org.bluetooth.characteristic.pollen_concentration" uuid="2A75">
+      <informativeText/>
+      <value length="3" type="hex" variable_length="false"/>
+      <properties indicate="false" indicate_requirement="excluded" notify="false" notify_requirement="optional" read="true" read_requirement="mandatory" reliable_write="false" reliable_write_requirement="excluded" write="false" write_no_response="false" write_no_response_requirement="excluded" write_requirement="excluded"/>
+      
+      <!--Environmental Sensing Measurement-->
+      <descriptor id="es_measurement_9" name="Environmental Sensing Measurement" sourceId="org.bluetooth.descriptor.es_measurement" uuid="290C">
+        <properties read="true" read_requirement="mandatory" write="false" write_requirement="excluded"/>
+        <value length="1" type="hex" variable_length="false"/>
+      </descriptor>
+      
+      <!--Environmental Sensing Trigger Setting-->
+      <descriptor id="es_trigger_setting_9" name="Environmental Sensing Trigger Setting" sourceId="org.bluetooth.descriptor.es_trigger_setting" uuid="290D">
+        <properties read="true" read_requirement="mandatory" write="false" write_requirement="c1"/>
+        <value length="1" type="hex" variable_length="false"/>
+      </descriptor>
+      
+      <!--Environmental Sensing Configuration-->
+      <descriptor id="es_configuration_9" name="Environmental Sensing Configuration" sourceId="org.bluetooth.descriptor.es_configuration" uuid="290B">
+        <properties read="true" read_requirement="mandatory" write="false" write_requirement="c1"/>
+        <value length="1" type="hex" variable_length="false"/>
+      </descriptor>
+      
+      <!--Characteristic User Description-->
+      <descriptor id="characteristic_user_description_9" name="Characteristic User Description" sourceId="org.bluetooth.descriptor.gatt.characteristic_user_description" uuid="2901">
+        <properties read="true" read_requirement="mandatory" write="false" write_requirement="optional"/>
+        <value length="1" type="utf-8" variable_length="false"/>
+      </descriptor>
+      
+      <!--Valid Range-->
+      <descriptor id="valid_range_10" name="Valid Range" sourceId="org.bluetooth.descriptor.valid_range" uuid="2906">
+        <properties read="true" read_requirement="mandatory" write="false" write_requirement="excluded"/>
+        <value length="6" type="hex" variable_length="false"/>
+      </descriptor>
+    </characteristic>
+    
+    <!--Rainfall-->
+    <characteristic id="rainfall" name="Rainfall" sourceId="org.bluetooth.characteristic.rainfall" uuid="2A78">
+      <informativeText/>
+      <value length="2" type="hex" variable_length="false"/>
+      <properties indicate="false" indicate_requirement="excluded" notify="false" notify_requirement="optional" read="true" read_requirement="mandatory" reliable_write="false" reliable_write_requirement="excluded" write="false" write_no_response="false" write_no_response_requirement="excluded" write_requirement="excluded"/>
+      
+      <!--Environmental Sensing Measurement-->
+      <descriptor id="es_measurement_10" name="Environmental Sensing Measurement" sourceId="org.bluetooth.descriptor.es_measurement" uuid="290C">
+        <properties read="true" read_requirement="mandatory" write="false" write_requirement="excluded"/>
+        <value length="1" type="hex" variable_length="false"/>
+      </descriptor>
+      
+      <!--Environmental Sensing Trigger Setting-->
+      <descriptor id="es_trigger_setting_10" name="Environmental Sensing Trigger Setting" sourceId="org.bluetooth.descriptor.es_trigger_setting" uuid="290D">
+        <properties read="true" read_requirement="mandatory" write="false" write_requirement="c1"/>
+        <value length="1" type="hex" variable_length="false"/>
+      </descriptor>
+      
+      <!--Environmental Sensing Configuration-->
+      <descriptor id="es_configuration_10" name="Environmental Sensing Configuration" sourceId="org.bluetooth.descriptor.es_configuration" uuid="290B">
+        <properties read="true" read_requirement="mandatory" write="false" write_requirement="c1"/>
+        <value length="1" type="hex" variable_length="false"/>
+      </descriptor>
+      
+      <!--Characteristic User Description-->
+      <descriptor id="characteristic_user_description_10" name="Characteristic User Description" sourceId="org.bluetooth.descriptor.gatt.characteristic_user_description" uuid="2901">
+        <properties read="true" read_requirement="mandatory" write="false" write_requirement="optional"/>
+        <value length="1" type="utf-8" variable_length="false"/>
+      </descriptor>
+      
+      <!--Valid Range-->
+      <descriptor id="valid_range_11" name="Valid Range" sourceId="org.bluetooth.descriptor.valid_range" uuid="2906">
+        <properties read="true" read_requirement="mandatory" write="false" write_requirement="excluded"/>
+        <value length="4" type="hex" variable_length="false"/>
+      </descriptor>
+    </characteristic>
+    
+    <!--Pressure-->
+    <characteristic id="pressure" name="Pressure" sourceId="org.bluetooth.characteristic.pressure" uuid="2A6D">
+      <informativeText/>
+      <value length="4" type="hex" variable_length="false"/>
+      <properties indicate="false" indicate_requirement="excluded" notify="false" notify_requirement="optional" read="true" read_requirement="mandatory" reliable_write="false" reliable_write_requirement="excluded" write="false" write_no_response="false" write_no_response_requirement="excluded" write_requirement="excluded"/>
+      
+      <!--Environmental Sensing Measurement-->
+      <descriptor id="es_measurement_11" name="Environmental Sensing Measurement" sourceId="org.bluetooth.descriptor.es_measurement" uuid="290C">
+        <properties read="true" read_requirement="mandatory" write="false" write_requirement="excluded"/>
+        <value length="1" type="hex" variable_length="false"/>
+      </descriptor>
+      
+      <!--Environmental Sensing Trigger Setting-->
+      <descriptor id="es_trigger_setting_11" name="Environmental Sensing Trigger Setting" sourceId="org.bluetooth.descriptor.es_trigger_setting" uuid="290D">
+        <properties read="true" read_requirement="mandatory" write="false" write_requirement="c1"/>
+        <value length="1" type="hex" variable_length="false"/>
+      </descriptor>
+      
+      <!--Environmental Sensing Configuration-->
+      <descriptor id="es_configuration_11" name="Environmental Sensing Configuration" sourceId="org.bluetooth.descriptor.es_configuration" uuid="290B">
+        <properties read="true" read_requirement="mandatory" write="false" write_requirement="c1"/>
+        <value length="1" type="hex" variable_length="false"/>
+      </descriptor>
+      
+      <!--Characteristic User Description-->
+      <descriptor id="characteristic_user_description_11" name="Characteristic User Description" sourceId="org.bluetooth.descriptor.gatt.characteristic_user_description" uuid="2901">
+        <properties read="true" read_requirement="mandatory" write="false" write_requirement="optional"/>
+        <value length="1" type="utf-8" variable_length="false"/>
+      </descriptor>
+      
+      <!--Valid Range-->
+      <descriptor id="valid_range_12" name="Valid Range" sourceId="org.bluetooth.descriptor.valid_range" uuid="2906">
+        <properties read="true" read_requirement="mandatory" write="false" write_requirement="excluded"/>
+        <value length="8" type="hex" variable_length="false"/>
+      </descriptor>
+    </characteristic>
+    
+    <!--Temperature-->
+    <characteristic id="temperature" name="Temperature" sourceId="org.bluetooth.characteristic.temperature" uuid="2A6E">
+      <informativeText/>
+      <value length="2" type="hex" variable_length="false"/>
+      <properties indicate="false" indicate_requirement="excluded" notify="false" notify_requirement="optional" read="true" read_requirement="mandatory" reliable_write="false" reliable_write_requirement="excluded" write="false" write_no_response="false" write_no_response_requirement="excluded" write_requirement="excluded"/>
+      
+      <!--Environmental Sensing Measurement-->
+      <descriptor id="es_measurement_12" name="Environmental Sensing Measurement" sourceId="org.bluetooth.descriptor.es_measurement" uuid="290C">
+        <properties read="true" read_requirement="mandatory" write="false" write_requirement="excluded"/>
+        <value length="1" type="hex" variable_length="false"/>
+      </descriptor>
+      
+      <!--Environmental Sensing Trigger Setting-->
+      <descriptor id="es_trigger_setting_12" name="Environmental Sensing Trigger Setting" sourceId="org.bluetooth.descriptor.es_trigger_setting" uuid="290D">
+        <properties read="true" read_requirement="mandatory" write="false" write_requirement="c1"/>
+        <value length="1" type="hex" variable_length="false"/>
+      </descriptor>
+      
+      <!--Environmental Sensing Configuration-->
+      <descriptor id="es_configuration_12" name="Environmental Sensing Configuration" sourceId="org.bluetooth.descriptor.es_configuration" uuid="290B">
+        <properties read="true" read_requirement="mandatory" write="false" write_requirement="c1"/>
+        <value length="1" type="hex" variable_length="false"/>
+      </descriptor>
+      
+      <!--Characteristic User Description-->
+      <descriptor id="characteristic_user_description_12" name="Characteristic User Description" sourceId="org.bluetooth.descriptor.gatt.characteristic_user_description" uuid="2901">
+        <properties read="true" read_requirement="mandatory" write="false" write_requirement="optional"/>
+        <value length="1" type="utf-8" variable_length="false"/>
+      </descriptor>
+      
+      <!--Valid Range-->
+      <descriptor id="valid_range_13" name="Valid Range" sourceId="org.bluetooth.descriptor.valid_range" uuid="2906">
+        <properties read="true" read_requirement="mandatory" write="false" write_requirement="excluded"/>
+        <value length="4" type="hex" variable_length="false"/>
+      </descriptor>
+    </characteristic>
+    
+    <!--True Wind Direction-->
+    <characteristic id="true_wind_direction" name="True Wind Direction" sourceId="org.bluetooth.characteristic.true_wind_direction" uuid="2A71">
+      <informativeText/>
+      <value length="2" type="hex" variable_length="false"/>
+      <properties indicate="false" indicate_requirement="excluded" notify="false" notify_requirement="optional" read="true" read_requirement="mandatory" reliable_write="false" reliable_write_requirement="excluded" write="false" write_no_response="false" write_no_response_requirement="excluded" write_requirement="excluded"/>
+      
+      <!--Environmental Sensing Measurement-->
+      <descriptor id="es_measurement_13" name="Environmental Sensing Measurement" sourceId="org.bluetooth.descriptor.es_measurement" uuid="290C">
+        <properties read="true" read_requirement="mandatory" write="false" write_requirement="excluded"/>
+        <value length="1" type="hex" variable_length="false"/>
+      </descriptor>
+      
+      <!--Environmental Sensing Trigger Setting-->
+      <descriptor id="es_trigger_setting_13" name="Environmental Sensing Trigger Setting" sourceId="org.bluetooth.descriptor.es_trigger_setting" uuid="290D">
+        <properties read="true" read_requirement="mandatory" write="false" write_requirement="c1"/>
+        <value length="1" type="hex" variable_length="false"/>
+      </descriptor>
+      
+      <!--Environmental Sensing Configuration-->
+      <descriptor id="es_configuration_13" name="Environmental Sensing Configuration" sourceId="org.bluetooth.descriptor.es_configuration" uuid="290B">
+        <properties read="true" read_requirement="mandatory" write="false" write_requirement="c1"/>
+        <value length="1" type="hex" variable_length="false"/>
+      </descriptor>
+      
+      <!--Characteristic User Description-->
+      <descriptor id="characteristic_user_description_13" name="Characteristic User Description" sourceId="org.bluetooth.descriptor.gatt.characteristic_user_description" uuid="2901">
+        <properties read="true" read_requirement="mandatory" write="false" write_requirement="optional"/>
+        <value length="1" type="utf-8" variable_length="false"/>
+      </descriptor>
+      
+      <!--Valid Range-->
+      <descriptor id="valid_range_14" name="Valid Range" sourceId="org.bluetooth.descriptor.valid_range" uuid="2906">
+        <properties read="true" read_requirement="mandatory" write="false" write_requirement="excluded"/>
+        <value length="4" type="hex" variable_length="false"/>
+      </descriptor>
+    </characteristic>
+    
+    <!--True Wind Speed-->
+    <characteristic id="true_wind_speed" name="True Wind Speed" sourceId="org.bluetooth.characteristic.true_wind_speed" uuid="2A70">
+      <informativeText/>
+      <value length="2" type="hex" variable_length="false"/>
+      <properties indicate="false" indicate_requirement="excluded" notify="false" notify_requirement="optional" read="true" read_requirement="mandatory" reliable_write="false" reliable_write_requirement="excluded" write="false" write_no_response="false" write_no_response_requirement="excluded" write_requirement="excluded"/>
+      
+      <!--Environmental Sensing Measurement-->
+      <descriptor id="es_measurement_14" name="Environmental Sensing Measurement" sourceId="org.bluetooth.descriptor.es_measurement" uuid="290C">
+        <properties read="true" read_requirement="mandatory" write="false" write_requirement="excluded"/>
+        <value length="1" type="hex" variable_length="false"/>
+      </descriptor>
+      
+      <!--Environmental Sensing Trigger Setting-->
+      <descriptor id="es_trigger_setting_14" name="Environmental Sensing Trigger Setting" sourceId="org.bluetooth.descriptor.es_trigger_setting" uuid="290D">
+        <properties read="true" read_requirement="mandatory" write="false" write_requirement="c1"/>
+        <value length="1" type="hex" variable_length="false"/>
+      </descriptor>
+      
+      <!--Environmental Sensing Configuration-->
+      <descriptor id="es_configuration_14" name="Environmental Sensing Configuration" sourceId="org.bluetooth.descriptor.es_configuration" uuid="290B">
+        <properties read="true" read_requirement="mandatory" write="false" write_requirement="c1"/>
+        <value length="1" type="hex" variable_length="false"/>
+      </descriptor>
+      
+      <!--Characteristic User Description-->
+      <descriptor id="characteristic_user_description_14" name="Characteristic User Description" sourceId="org.bluetooth.descriptor.gatt.characteristic_user_description" uuid="2901">
+        <properties read="true" read_requirement="mandatory" write="false" write_requirement="optional"/>
+        <value length="1" type="utf-8" variable_length="false"/>
+      </descriptor>
+      
+      <!--Valid Range-->
+      <descriptor id="valid_range_15" name="Valid Range" sourceId="org.bluetooth.descriptor.valid_range" uuid="2906">
+        <properties read="true" read_requirement="mandatory" write="false" write_requirement="excluded"/>
+        <value length="4" type="hex" variable_length="false"/>
+      </descriptor>
+    </characteristic>
+    
+    <!--UV Index-->
+    <characteristic id="uv_index" name="UV Index" sourceId="org.bluetooth.characteristic.uv_index" uuid="2A76">
+      <informativeText/>
+      <value length="1" type="hex" variable_length="false"/>
+      <properties indicate="false" indicate_requirement="excluded" notify="false" notify_requirement="optional" read="true" read_requirement="mandatory" reliable_write="false" reliable_write_requirement="excluded" write="false" write_no_response="false" write_no_response_requirement="excluded" write_requirement="excluded"/>
+      
+      <!--Environmental Sensing Measurement-->
+      <descriptor id="es_measurement_15" name="Environmental Sensing Measurement" sourceId="org.bluetooth.descriptor.es_measurement" uuid="290C">
+        <properties read="true" read_requirement="mandatory" write="false" write_requirement="excluded"/>
+        <value length="1" type="hex" variable_length="false"/>
+      </descriptor>
+      
+      <!--Environmental Sensing Trigger Setting-->
+      <descriptor id="es_trigger_setting_15" name="Environmental Sensing Trigger Setting" sourceId="org.bluetooth.descriptor.es_trigger_setting" uuid="290D">
+        <properties read="true" read_requirement="mandatory" write="false" write_requirement="c1"/>
+        <value length="1" type="hex" variable_length="false"/>
+      </descriptor>
+      
+      <!--Environmental Sensing Configuration-->
+      <descriptor id="es_configuration_15" name="Environmental Sensing Configuration" sourceId="org.bluetooth.descriptor.es_configuration" uuid="290B">
+        <properties read="true" read_requirement="mandatory" write="false" write_requirement="c1"/>
+        <value length="1" type="hex" variable_length="false"/>
+      </descriptor>
+      
+      <!--Characteristic User Description-->
+      <descriptor id="characteristic_user_description_15" name="Characteristic User Description" sourceId="org.bluetooth.descriptor.gatt.characteristic_user_description" uuid="2901">
+        <properties read="true" read_requirement="mandatory" write="false" write_requirement="optional"/>
+        <value length="1" type="utf-8" variable_length="false"/>
+      </descriptor>
+      
+      <!--Valid Range-->
+      <descriptor id="valid_range_16" name="Valid Range" sourceId="org.bluetooth.descriptor.valid_range" uuid="2906">
+        <properties read="true" read_requirement="mandatory" write="false" write_requirement="excluded"/>
+        <value length="2" type="hex" variable_length="false"/>
+      </descriptor>
+    </characteristic>
+    
+    <!--Wind Chill-->
+    <characteristic id="wind_chill" name="Wind Chill" sourceId="org.bluetooth.characteristic.wind_chill" uuid="2A79">
+      <informativeText/>
+      <value length="1" type="hex" variable_length="false"/>
+      <properties indicate="false" indicate_requirement="excluded" notify="false" notify_requirement="optional" read="true" read_requirement="mandatory" reliable_write="false" reliable_write_requirement="excluded" write="false" write_no_response="false" write_no_response_requirement="excluded" write_requirement="excluded"/>
+      
+      <!--Environmental Sensing Measurement-->
+      <descriptor id="es_measurement_16" name="Environmental Sensing Measurement" sourceId="org.bluetooth.descriptor.es_measurement" uuid="290C">
+        <properties read="true" read_requirement="mandatory" write="false" write_requirement="excluded"/>
+        <value length="1" type="hex" variable_length="false"/>
+      </descriptor>
+      
+      <!--Environmental Sensing Trigger Setting-->
+      <descriptor id="es_trigger_setting_16" name="Environmental Sensing Trigger Setting" sourceId="org.bluetooth.descriptor.es_trigger_setting" uuid="290D">
+        <properties read="true" read_requirement="mandatory" write="false" write_requirement="c1"/>
+        <value length="1" type="hex" variable_length="false"/>
+      </descriptor>
+      
+      <!--Environmental Sensing Configuration-->
+      <descriptor id="es_configuration_16" name="Environmental Sensing Configuration" sourceId="org.bluetooth.descriptor.es_configuration" uuid="290B">
+        <properties read="true" read_requirement="mandatory" write="false" write_requirement="c1"/>
+        <value length="1" type="hex" variable_length="false"/>
+      </descriptor>
+      
+      <!--Characteristic User Description-->
+      <descriptor id="characteristic_user_description_16" name="Characteristic User Description" sourceId="org.bluetooth.descriptor.gatt.characteristic_user_description" uuid="2901">
+        <properties read="true" read_requirement="mandatory" write="false" write_requirement="optional"/>
+        <value length="1" type="utf-8" variable_length="false"/>
+      </descriptor>
+      
+      <!--Valid Range-->
+      <descriptor id="valid_range_17" name="Valid Range" sourceId="org.bluetooth.descriptor.valid_range" uuid="2906">
+        <properties read="true" read_requirement="mandatory" write="false" write_requirement="excluded"/>
+        <value length="2" type="hex" variable_length="false"/>
+      </descriptor>
+    </characteristic>
+    
+    <!--Barometric Pressure Trend-->
+    <characteristic id="barometric_pressure_trend" name="Barometric Pressure Trend" sourceId="org.bluetooth.characteristic.barometric_pressure_trend" uuid="2AA3">
+      <informativeText/>
+      <value length="1" type="hex" variable_length="false"/>
+      <properties indicate="false" indicate_requirement="excluded" notify="false" notify_requirement="optional" read="true" read_requirement="mandatory" reliable_write="false" reliable_write_requirement="excluded" write="false" write_no_response="false" write_no_response_requirement="excluded" write_requirement="excluded"/>
+      
+      <!--Environmental Sensing Measurement-->
+      <descriptor id="es_measurement_17" name="Environmental Sensing Measurement" sourceId="org.bluetooth.descriptor.es_measurement" uuid="290C">
+        <properties read="true" read_requirement="mandatory" write="false" write_requirement="excluded"/>
+        <value length="1" type="hex" variable_length="false"/>
+      </descriptor>
+      
+      <!--Environmental Sensing Trigger Setting-->
+      <descriptor id="es_trigger_setting_17" name="Environmental Sensing Trigger Setting" sourceId="org.bluetooth.descriptor.es_trigger_setting" uuid="290D">
+        <properties read="true" read_requirement="mandatory" write="false" write_requirement="c1"/>
+        <value length="1" type="hex" variable_length="false"/>
+      </descriptor>
+      
+      <!--Environmental Sensing Configuration-->
+      <descriptor id="es_configuration_17" name="Environmental Sensing Configuration" sourceId="org.bluetooth.descriptor.es_configuration" uuid="290B">
+        <properties read="true" read_requirement="mandatory" write="false" write_requirement="c1"/>
+        <value length="1" type="hex" variable_length="false"/>
+      </descriptor>
+      
+      <!--Characteristic User Description-->
+      <descriptor id="characteristic_user_description_17" name="Characteristic User Description" sourceId="org.bluetooth.descriptor.gatt.characteristic_user_description" uuid="2901">
+        <properties read="true" read_requirement="mandatory" write="false" write_requirement="optional"/>
+        <value length="1" type="utf-8" variable_length="false"/>
+      </descriptor>
+      
+      <!--Valid Range-->
+      <descriptor id="valid_range_18" name="Valid Range" sourceId="org.bluetooth.descriptor.valid_range" uuid="2906">
+        <properties read="true" read_requirement="mandatory" write="false" write_requirement="excluded"/>
+        <value length="2" type="hex" variable_length="false"/>
+      </descriptor>
+    </characteristic>
+    
+    <!--Magnetic Declination-->
+    <characteristic id="magnetic_declination" name="Magnetic Declination" sourceId="org.bluetooth.characteristic.magnetic_declination" uuid="2A2C">
+      <informativeText/>
+      <value length="2" type="hex" variable_length="false"/>
+      <properties indicate="false" indicate_requirement="excluded" notify="false" notify_requirement="optional" read="true" read_requirement="mandatory" reliable_write="false" reliable_write_requirement="excluded" write="false" write_no_response="false" write_no_response_requirement="excluded" write_requirement="excluded"/>
+      
+      <!--Environmental Sensing Measurement-->
+      <descriptor id="es_measurement_18" name="Environmental Sensing Measurement" sourceId="org.bluetooth.descriptor.es_measurement" uuid="290C">
+        <properties read="true" read_requirement="mandatory" write="false" write_requirement="excluded"/>
+        <value length="1" type="hex" variable_length="false"/>
+      </descriptor>
+      
+      <!--Environmental Sensing Trigger Setting-->
+      <descriptor id="es_trigger_setting_18" name="Environmental Sensing Trigger Setting" sourceId="org.bluetooth.descriptor.es_trigger_setting" uuid="290D">
+        <properties read="true" read_requirement="mandatory" write="false" write_requirement="c1"/>
+        <value length="1" type="hex" variable_length="false"/>
+      </descriptor>
+      
+      <!--Environmental Sensing Configuration-->
+      <descriptor id="es_configuration_18" name="Environmental Sensing Configuration" sourceId="org.bluetooth.descriptor.es_configuration" uuid="290B">
+        <properties read="true" read_requirement="mandatory" write="false" write_requirement="c1"/>
+        <value length="1" type="hex" variable_length="false"/>
+      </descriptor>
+      
+      <!--Characteristic User Description-->
+      <descriptor id="characteristic_user_description_18" name="Characteristic User Description" sourceId="org.bluetooth.descriptor.gatt.characteristic_user_description" uuid="2901">
+        <properties read="true" read_requirement="mandatory" write="false" write_requirement="optional"/>
+        <value length="1" type="utf-8" variable_length="false"/>
+      </descriptor>
+      
+      <!--Valid Range-->
+      <descriptor id="valid_range_19" name="Valid Range" sourceId="org.bluetooth.descriptor.valid_range" uuid="2906">
+        <properties read="true" read_requirement="mandatory" write="false" write_requirement="excluded"/>
+        <value length="4" type="hex" variable_length="false"/>
+      </descriptor>
+    </characteristic>
+    
+    <!--Magnetic Flux Density - 2D-->
+    <characteristic id="magnetic_flux_density_2D" name="Magnetic Flux Density - 2D" sourceId="org.bluetooth.characteristic.magnetic_flux_density_2D" uuid="2AA0">
+      <informativeText/>
+      <value length="4" type="hex" variable_length="false"/>
+      <properties indicate="false" indicate_requirement="excluded" notify="false" notify_requirement="optional" read="true" read_requirement="mandatory" reliable_write="false" reliable_write_requirement="excluded" write="false" write_no_response="false" write_no_response_requirement="excluded" write_requirement="excluded"/>
+      
+      <!--Environmental Sensing Measurement-->
+      <descriptor id="es_measurement_19" name="Environmental Sensing Measurement" sourceId="org.bluetooth.descriptor.es_measurement" uuid="290C">
+        <properties read="true" read_requirement="mandatory" write="false" write_requirement="excluded"/>
+        <value length="1" type="hex" variable_length="false"/>
+      </descriptor>
+      
+      <!--Environmental Sensing Trigger Setting-->
+      <descriptor id="es_trigger_setting_19" name="Environmental Sensing Trigger Setting" sourceId="org.bluetooth.descriptor.es_trigger_setting" uuid="290D">
+        <properties read="true" read_requirement="mandatory" write="false" write_requirement="c1"/>
+        <value length="1" type="hex" variable_length="false"/>
+      </descriptor>
+      
+      <!--Environmental Sensing Configuration-->
+      <descriptor id="es_configuration_19" name="Environmental Sensing Configuration" sourceId="org.bluetooth.descriptor.es_configuration" uuid="290B">
+        <properties read="true" read_requirement="mandatory" write="false" write_requirement="c1"/>
+        <value length="1" type="hex" variable_length="false"/>
+      </descriptor>
+      
+      <!--Characteristic User Description-->
+      <descriptor id="characteristic_user_description_19" name="Characteristic User Description" sourceId="org.bluetooth.descriptor.gatt.characteristic_user_description" uuid="2901">
+        <properties read="true" read_requirement="mandatory" write="false" write_requirement="optional"/>
+        <value length="1" type="utf-8" variable_length="false"/>
+      </descriptor>
+      
+      <!--Valid Range-->
+      <descriptor id="valid_range_20" name="Valid Range" sourceId="org.bluetooth.descriptor.valid_range" uuid="2906">
+        <properties read="true" read_requirement="mandatory" write="false" write_requirement="excluded"/>
+        <value length="8" type="hex" variable_length="false"/>
+      </descriptor>
+    </characteristic>
+    
+    <!--Magnetic Flux Density - 3D-->
+    <characteristic id="magnetic_flux_density_3D" name="Magnetic Flux Density - 3D" sourceId="org.bluetooth.characteristic.magnetic_flux_density_3D" uuid="2AA1">
+      <informativeText/>
+      <value length="6" type="hex" variable_length="false"/>
+      <properties indicate="false" indicate_requirement="excluded" notify="false" notify_requirement="optional" read="true" read_requirement="mandatory" reliable_write="false" reliable_write_requirement="excluded" write="false" write_no_response="false" write_no_response_requirement="excluded" write_requirement="excluded"/>
+      
+      <!--Environmental Sensing Measurement-->
+      <descriptor id="es_measurement_20" name="Environmental Sensing Measurement" sourceId="org.bluetooth.descriptor.es_measurement" uuid="290C">
+        <properties read="true" read_requirement="mandatory" write="false" write_requirement="excluded"/>
+        <value length="1" type="hex" variable_length="false"/>
+      </descriptor>
+      
+      <!--Environmental Sensing Trigger Setting-->
+      <descriptor id="es_trigger_setting_20" name="Environmental Sensing Trigger Setting" sourceId="org.bluetooth.descriptor.es_trigger_setting" uuid="290D">
+        <properties read="true" read_requirement="mandatory" write="false" write_requirement="c1"/>
+        <value length="1" type="hex" variable_length="false"/>
+      </descriptor>
+      
+      <!--Environmental Sensing Configuration-->
+      <descriptor id="es_configuration_20" name="Environmental Sensing Configuration" sourceId="org.bluetooth.descriptor.es_configuration" uuid="290B">
+        <properties read="true" read_requirement="mandatory" write="false" write_requirement="c1"/>
+        <value length="1" type="hex" variable_length="false"/>
+      </descriptor>
+      
+      <!--Characteristic User Description-->
+      <descriptor id="characteristic_user_description_20" name="Characteristic User Description" sourceId="org.bluetooth.descriptor.gatt.characteristic_user_description" uuid="2901">
+        <properties read="true" read_requirement="mandatory" write="false" write_requirement="optional"/>
+        <value length="1" type="utf-8" variable_length="false"/>
+      </descriptor>
+      
+      <!--Valid Range-->
+      <descriptor id="valid_range_21" name="Valid Range" sourceId="org.bluetooth.descriptor.valid_range" uuid="2906">
+        <properties read="true" read_requirement="mandatory" write="false" write_requirement="excluded"/>
+        <value length="12" type="hex" variable_length="false"/>
       </descriptor>
     </characteristic>
   </service>
@@ -877,25 +896,6 @@
       <informativeText>Abstract: The Transmit Power Level characteristic represents the current transmit power level in dBm, and the level ranges from -100 dBm to +20 dBm to a resolution of 1 dBm. Summary: The value of the characteristic is a signed 8 bit integer that has a fixed point exponent of 0. Examples: The value 0x12 is interpreted as +18dBm The value 0xEE is interpreted as -18dBm </informativeText>
       <value length="1" type="hex" variable_length="false"/>
       <properties indicate="false" indicate_requirement="excluded" notify="false" notify_requirement="excluded" read="true" read_requirement="mandatory" reliable_write="false" reliable_write_requirement="excluded" write="false" write_no_response="false" write_no_response_requirement="excluded" write_requirement="excluded"/>
-    </characteristic>
-  </service>
-  
-  <!--Silicon Labs OTA-->
-  <service advertise="false" id="ota" name="Silicon Labs OTA" requirement="mandatory" sourceId="com.silabs.service.ota" type="primary" uuid="1D14D6EE-FD63-4FA1-BFA4-8F47B42119F0">
-    <informativeText>Abstract:  The Silicon Labs OTA Service enables over-the-air firmware update of the device.  </informativeText>
-    
-    <!--Silicon Labs OTA Control-->
-    <characteristic id="ota_control" name="Silicon Labs OTA Control" sourceId="com.silabs.characteristic.ota_control" uuid="F7BF3564-FB6D-4E53-88A4-5E37E0326063">
-      <informativeText>Abstract:  Silicon Labs OTA Control.  </informativeText>
-      <value length="1" type="user" variable_length="false"/>
-      <properties indicate="false" indicate_requirement="excluded" notify="false" notify_requirement="excluded" read="false" read_requirement="excluded" reliable_write="false" reliable_write_requirement="excluded" write="true" write_no_response="false" write_no_response_requirement="excluded" write_requirement="mandatory"/>
-    </characteristic>
-    
-    <!--Silicon Labs OTA Data-->
-    <characteristic id="ota_data" name="Silicon Labs OTA Data" sourceId="com.silabs.characteristic.ota_data" uuid="984227F3-34FC-4045-A5D0-2C581F81A153">
-      <informativeText>Abstract:  Silicon Labs OTA Data.  </informativeText>
-      <value length="20" type="user" variable_length="false"/>
-      <properties indicate="false" indicate_requirement="excluded" notify="false" notify_requirement="excluded" read="false" read_requirement="excluded" reliable_write="false" reliable_write_requirement="excluded" write="false" write_no_response="true" write_no_response_requirement="mandatory" write_requirement="excluded"/>
     </characteristic>
   </service>
 </gatt>
