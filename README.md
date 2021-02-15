@@ -40,7 +40,7 @@ The project is a pollution monituring system which monitors the environmental po
 # Block Diagram
 ![](https://github.com/HARSH1911RATHORE/IOT_final_project_spring_2020/blob/master/BLOCK_DIAGRAM_IOT.png)
 
-## [](https://github.com/HARSH1911RATHORE/IOT_final_project_spring_2020/tree/1262f5e660c0273681406807c0b4457386b7123b#project-status)Project Status
+## [](https://github.com/HARSH1911RATHORE/IOT_final_project_spring_2020/tree/1262f5e660c0273681406807c0b4457386b7123b#project-status)Project
 
 -   The Air quality sensor has been interfaced to the board with Pin number P31 for PD 13, SCL and Pin number P33 for PD 14, SDA. State machine for Humidity based sensor was created with data being measured in no hold master mode .
 -   Gpio even based interrupt was configured which gets the status of button press. This button press will be used for bonding the board with the client to prevent man in the middle attack.
