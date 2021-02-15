@@ -1,7 +1,7 @@
 
 # [](https://github.com/HARSH1911RATHORE/IOT_final_project_spring_2020/tree/1262f5e660c0273681406807c0b4457386b7123b#iot_final_project_spring_2020)IOT_final_project_spring_2020
 
-# [](https://github.com/HARSH1911RATHORE/IOT_final_project_spring_2020/tree/1262f5e660c0273681406807c0b4457386b7123b#pollution-monituring-system)Pollution Monituring System
+# [](https://github.com/HARSH1911RATHORE/IOT_final_project_spring_2020/tree/1262f5e660c0273681406807c0b4457386b7123b#pollution-monituring-system)Pollution Monitoring System
 
 # Overview
 The project is a pollution monituring system which monitors the environmental pollution and air quality in the form of ppm value of co2 and humidity in the air. This data is recorded by the server and send to the client mobile application
